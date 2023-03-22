@@ -11,7 +11,4 @@ export class NewRecipeInput {
   @IsOptional()
   @Length(30, 255)
   description?: string;
-
-  @Field((type) => [String])
-  ingredients: string[];
 }

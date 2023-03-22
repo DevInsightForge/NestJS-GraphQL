@@ -12,7 +12,8 @@ export class RecipesService {
    */
 
   async create(data: NewRecipeInput): Promise<Recipe> {
-    return { ...data, id: "1", creationDate: new Date() };
+    const recipe = await Recipe.create({ ...data }).save();
+    return recipe;
   }
 
   async findOneById(id: string): Promise<Recipe> {

@@ -1,19 +1,28 @@
-import { Directive, Field, ID, ObjectType } from "@nestjs/graphql";
+import { Field, ID, ObjectType } from "@nestjs/graphql";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @ObjectType({ description: "recipe " })
-export class Recipe {
-  @Field((type) => ID)
+@Entity()
+export class Recipe extends BaseEntity {
+  @Field(() => ID)
+  @PrimaryGeneratedColumn()
   id: string;
 
-  @Directive("@upper")
+  @Field()
+  @Column()
   title: string;
 
   @Field({ nullable: true })
+  @Column()
   description?: string;
 
   @Field()
+  @CreateDateColumn()
   creationDate: Date;
-
-  @Field((type) => [String])
-  ingredients: string[];
 }

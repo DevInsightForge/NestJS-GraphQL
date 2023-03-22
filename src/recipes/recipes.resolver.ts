@@ -8,11 +8,11 @@ import { RecipesService } from "./recipes.service";
 
 const pubSub = new PubSub();
 
-@Resolver((of) => Recipe)
+@Resolver(() => Recipe)
 export class RecipesResolver {
   constructor(private readonly recipesService: RecipesService) {}
 
-  @Query((returns) => Recipe)
+  @Query(() => Recipe)
   async recipe(@Args("id") id: string): Promise<Recipe> {
     const recipe = await this.recipesService.findOneById(id);
     if (!recipe) {
