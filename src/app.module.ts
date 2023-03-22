@@ -1,25 +1,23 @@
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
 import { GraphQLModule } from "@nestjs/graphql";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { join } from "path";
+import { databaseConfig } from "./database";
 import { RecipesModule } from "./recipes/recipes.module";
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     //-------------------------//
     // Database Configurations //
     //-------------------------//
     TypeOrmModule.forRoot({
-      type: "sqlite",
-      database: join(__dirname, "../db.sqlite"),
-      synchronize: false,
-      dropSchema: false,
-      logging: false,
+      ...databaseConfig,
       autoLoadEntities: true,
-      migrations: [join(__dirname, "database/migrations/*{.ts,.js}")],
-      migrationsRun: true,
     }),
     //------------------------------//
     // Apollo Server Configurations //
