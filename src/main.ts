@@ -12,7 +12,7 @@ async function bootstrap() {
   await app.listen(port);
 
   console.log(
-    `[WEB] Application is running on: http://localhost:${port}/graphql`
+    `[SERVER] Server is running on: http://localhost:${port}/graphql`
   );
 }
 
