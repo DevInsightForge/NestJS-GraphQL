@@ -1,8 +1,11 @@
 import { config as loadEnvConfigs } from "dotenv";
+import { join } from "path";
 import { DataSource } from "typeorm";
-import { migrationsEntries, modelEntries } from "./paths.config";
 
 loadEnvConfigs();
+
+export const modelEntries = join(__dirname, "../modules/**/*.model.ts");
+export const migrationsEntries = join(__dirname, "../migrations/*.ts}");
 
 const AppDataSource = new DataSource({
   type: "postgres",
