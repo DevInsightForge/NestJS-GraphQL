@@ -5,6 +5,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import apolloConfig from "./configs/apollo.config";
 import databaseConfig from "./configs/database.config";
 import { RecipesModule } from "./modules/recipes/recipes.module";
+import { ComplexityPlugin } from "./utilities/plugins/complexity.plugin";
+import { LoggingPlugin } from "./utilities/plugins/logging.plugin";
 
 @Module({
   imports: [
@@ -26,6 +28,13 @@ import { RecipesModule } from "./modules/recipes/recipes.module";
     // Application Modules //
     //---------------------//
     RecipesModule,
+  ],
+  providers: [
+    //------------------------//
+    // GraphQL Server Plugins //
+    //------------------------//
+    LoggingPlugin,
+    ComplexityPlugin,
   ],
 })
 export class AppModule {}

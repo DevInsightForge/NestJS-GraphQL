@@ -22,7 +22,7 @@ const databaseConfig: TypeOrmModuleAsyncOptions = {
           type: "sqlite",
           database: join(__dirname, "../../db.sqlite3"),
           synchronize: true,
-          dropSchema: true,
+          dropSchema: false,
           autoLoadEntities: true,
         };
   },

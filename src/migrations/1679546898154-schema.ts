@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class schema1679546898154 implements MigrationInterface {
-    name = 'schema1679546898154'
+  name = "schema1679546898154";
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             CREATE TABLE "recipe" (
                 "id" SERIAL NOT NULL,
                 "title" character varying NOT NULL,
@@ -13,12 +13,11 @@ export class schema1679546898154 implements MigrationInterface {
                 CONSTRAINT "PK_e365a2fedf57238d970e07825ca" PRIMARY KEY ("id")
             )
         `);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             DROP TABLE "recipe"
         `);
-    }
-
+  }
 }
