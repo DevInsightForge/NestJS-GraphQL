@@ -4,9 +4,11 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 const apolloConfig: ApolloDriverConfig = {
   driver: ApolloDriver,
   autoSchemaFile: true,
-  installSubscriptionHandlers: true,
   playground: false,
   plugins: [ApolloServerPluginLandingPageLocalDefault()],
+  subscriptions: {
+    "graphql-ws": true,
+  },
   context: ({ req }) => ({
     req,
   }),
