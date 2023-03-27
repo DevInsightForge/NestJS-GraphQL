@@ -8,6 +8,7 @@ const apolloConfig: ApolloDriverConfig = {
   plugins: [ApolloServerPluginLandingPageLocalDefault()],
   subscriptions: {
     "graphql-ws": true,
+    "subscriptions-transport-ws": true,
   },
   context: ({ req }) => ({
     req,
