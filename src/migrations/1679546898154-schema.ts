@@ -5,7 +5,7 @@ export class schema1679546898154 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-            CREATE TABLE "recipe" (
+            CREATE TABLE "message" (
                 "id" SERIAL NOT NULL,
                 "title" character varying NOT NULL,
                 "description" character varying NOT NULL,
@@ -17,7 +17,7 @@ export class schema1679546898154 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-            DROP TABLE "recipe"
+            DROP TABLE "message"
         `);
   }
 }

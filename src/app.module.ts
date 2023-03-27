@@ -4,7 +4,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import apolloConfig from "./configs/apollo.config";
 import databaseConfig from "./configs/database.config";
-import { RecipesModule } from "./modules/recipes/recipes.module";
+import { MessageModule } from "./modules/message/message.module";
 import { ComplexityPlugin } from "./utilities/plugins/complexity.plugin";
 import { LoggingPlugin } from "./utilities/plugins/logging.plugin";
 
@@ -27,7 +27,7 @@ import { LoggingPlugin } from "./utilities/plugins/logging.plugin";
     //---------------------//
     // Application Modules //
     //---------------------//
-    RecipesModule,
+    MessageModule,
   ],
   providers: [
     //------------------------//

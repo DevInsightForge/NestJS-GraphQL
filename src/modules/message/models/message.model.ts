@@ -7,22 +7,18 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
-@ObjectType({ description: "recipe " })
+@ObjectType({ description: "message model" })
 @Entity()
-export class Recipe extends BaseEntity {
+export class Message extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: string;
 
   @Field()
   @Column()
-  title: string;
-
-  @Field({ nullable: true })
-  @Column()
-  description?: string;
+  content: string;
 
   @Field()
-  @CreateDateColumn()
-  creationDate: Date;
+  @CreateDateColumn({ name: "submitted_at" })
+  submittedAt: Date;
 }
