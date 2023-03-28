@@ -5,7 +5,7 @@ import { DataSource } from "typeorm";
 loadEnvConfigs();
 
 export const modelEntries = join(__dirname, "../modules/**/*.model.ts");
-export const migrationsEntries = join(__dirname, "../migrations/*.ts}");
+export const migrationsEntries = join(__dirname, "../migrations/*.ts");
 
 const AppDataSource = new DataSource({
   type: "postgres",

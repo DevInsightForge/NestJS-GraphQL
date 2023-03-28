@@ -19,6 +19,6 @@ export class Message extends BaseEntity {
   content: string;
 
   @Field()
-  @CreateDateColumn({ name: "submitted_at" })
-  submittedAt: Date;
+  @CreateDateColumn({ name: "sent_at" })
+  sentAt: Date;
 }
