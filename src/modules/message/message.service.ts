@@ -13,8 +13,14 @@ export class MessageService {
     return await Message.findOneByOrFail({ id });
   }
 
-  async findAll(messagesArgs: MessageArgs): Promise<Message[]> {
-    return await Message.find();
+  async findAll({ take = 10, skip = 0 }: MessageArgs): Promise<Message[]> {
+    const result = await Message.find({
+      take,
+      skip,
+      order: { id: "DESC" },
+    });
+
+    return result.reverse();
   }
 
   async remove(id: string): Promise<boolean> {
