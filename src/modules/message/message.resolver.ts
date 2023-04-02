@@ -32,7 +32,7 @@ export default class MessageResolver {
     @Args("newMessageData") newMessageData: NewMessageInput
   ): Promise<Message> {
     const message = await this.messagesService.create(newMessageData);
-    this.pubSubService.publish("messageAdded", { messageAdded: message });
+    await this.pubSubService.publish("messageAdded", { messageAdded: message });
     return message;
   }
 
