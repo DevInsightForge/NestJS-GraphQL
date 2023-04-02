@@ -8,6 +8,7 @@ import MessageModule from "./modules/message/message.module";
 import UserModule from "./modules/user/user.module";
 import ComplexityPlugin from "./utilities/plugins/complexity.plugin";
 import LoggingPlugin from "./utilities/plugins/logging.plugin";
+import ValidationProvider from "./utilities/providers/validation.provider";
 
 @Module({
   imports: [
@@ -32,9 +33,13 @@ import LoggingPlugin from "./utilities/plugins/logging.plugin";
     MessageModule,
   ],
   providers: [
-    // ------------------------//
+    // --------------------//
+    // Nest Server Plugins //
+    // --------------------//
+    ValidationProvider,
+    // -----------------------//
     // GraphQL Server Plugins //
-    // ------------------------//
+    // -----------------------//
     LoggingPlugin,
     ComplexityPlugin,
   ],

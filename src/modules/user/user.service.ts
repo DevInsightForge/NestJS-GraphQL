@@ -14,7 +14,7 @@ export default class UserService {
       });
 
       if (!(await compare(password, user?.password))) {
-        throw new Error("Invalid password");
+        throw new Error("Invalid login credentials");
       }
 
       return user;
