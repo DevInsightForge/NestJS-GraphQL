@@ -1,12 +1,14 @@
 import { Logger, ValidationPipe } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
 import AppModule from "./app.module";
 
 const logger = new Logger("Server");
-const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 4000;
 
 const main = async (): Promise<string> => {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
+  const port = parseInt(configService.get("PORT", "4000"), 10);
 
   app.useGlobalPipes(new ValidationPipe());
 

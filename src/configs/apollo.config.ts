@@ -6,6 +6,8 @@ import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 export interface ContextType {
   req?: Request;
   res?: Response;
+  userId?: string | undefined;
+  userRole?: string | undefined;
 }
 
 const apolloConfig: ApolloDriverConfig = {

@@ -5,6 +5,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import apolloConfig from "./configs/apollo.config";
 import databaseConfig from "./configs/database.config";
 import MessageModule from "./modules/message/message.module";
+import UserModule from "./modules/user/user.module";
 import ComplexityPlugin from "./utilities/plugins/complexity.plugin";
 import LoggingPlugin from "./utilities/plugins/logging.plugin";
 
@@ -27,6 +28,7 @@ import LoggingPlugin from "./utilities/plugins/logging.plugin";
     // ---------------------//
     // Application Modules //
     // ---------------------//
+    UserModule,
     MessageModule,
   ],
   providers: [
