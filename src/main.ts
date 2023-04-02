@@ -21,4 +21,4 @@ const main = async (): Promise<string> => {
 
 main()
   .then((serverUrl) => logger.log(`Server is running on: ${serverUrl}/graphql`))
-  .catch(() => logger.error("Something went wrong!"));
+  .catch((err) => logger.error("Something went wrong!", err));
