@@ -3,11 +3,11 @@ import { Plugin } from "@nestjs/apollo";
 import { Logger } from "@nestjs/common";
 
 @Plugin()
-export class LoggingPlugin implements ApolloServerPlugin {
+export default class LoggingPlugin implements ApolloServerPlugin {
   private readonly logger = new Logger("GraphQLLogger");
 
   async requestDidStart(): Promise<GraphQLRequestListener<any>> {
-    const logger = this.logger;
+    const { logger } = this;
     const start = Date.now();
     let operation: string;
 

@@ -1,16 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { MessageArgs } from "./dto/message.args";
-import { NewMessageInput } from "./dto/new-message.input";
-import { Message } from "./models/message.model";
+import MessageArgs from "./dto/message.args";
+import NewMessageInput from "./dto/new-message.input";
+import Message from "./models/message.model";
 
 @Injectable()
-export class MessageService {
+export default class MessageService {
   async create(data: NewMessageInput): Promise<Message> {
-    return await Message.create({ ...data }).save();
+    return Message.create({ ...data }).save();
   }
 
   async findOneById(id: string): Promise<Message> {
-    return await Message.findOneByOrFail({ id });
+    return Message.findOneByOrFail({ id });
   }
 
   async findAll({ take, skip }: MessageArgs): Promise<Message[]> {

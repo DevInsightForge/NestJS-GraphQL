@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { config as loadEnvConfigs } from "dotenv";
 import { join } from "path";
 import { DataSource } from "typeorm";

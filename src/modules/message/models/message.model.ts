@@ -9,7 +9,7 @@ import {
 
 @ObjectType({ description: "message model" })
 @Entity()
-export class Message extends BaseEntity {
+export default class Message extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
   id: string;

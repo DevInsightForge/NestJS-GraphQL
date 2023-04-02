@@ -1,9 +1,9 @@
 import { Resolver } from "@nestjs/graphql";
-import { User } from "./models/user.model";
-import { UserService } from "./user.service";
+import User from "./models/user.model";
+import UserService from "./user.service";
 
 @Resolver(() => User)
-export class UserResolver {
+export default class UserResolver {
   constructor(private readonly usersService: UserService) {}
 
   //   @Query(() => [User])

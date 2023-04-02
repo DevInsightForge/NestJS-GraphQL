@@ -1,3 +1,4 @@
+import { Field, ID, ObjectType, registerEnumType } from "@nestjs/graphql";
 import {
   BaseEntity,
   Column,
@@ -6,7 +7,6 @@ import {
   //   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
-import { Field, ID, ObjectType, registerEnumType } from "@nestjs/graphql";
 
 export enum UserRole {
   superadmin = "superadmin",
@@ -21,7 +21,7 @@ registerEnumType(UserRole, {
 
 @ObjectType()
 @Entity()
-export class User extends BaseEntity {
+export default class User extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;

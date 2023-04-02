@@ -10,7 +10,7 @@ import {
 
 @ObjectType()
 @Entity({ name: "refresh_token" })
-export class RefreshToken extends BaseEntity {
+export default class RefreshToken extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   token: string;
 

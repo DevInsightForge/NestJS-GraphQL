@@ -1,13 +1,13 @@
 import { NotFoundException } from "@nestjs/common";
 import { Args, Mutation, Query, Resolver, Subscription } from "@nestjs/graphql";
 import { PubSub } from "graphql-subscriptions";
-import { MessageArgs } from "./dto/message.args";
-import { NewMessageInput } from "./dto/new-message.input";
-import { MessageService } from "./message.service";
-import { Message } from "./models/message.model";
+import MessageArgs from "./dto/message.args";
+import NewMessageInput from "./dto/new-message.input";
+import MessageService from "./message.service";
+import Message from "./models/message.model";
 
 @Resolver(() => Message)
-export class MessageResolver {
+export default class MessageResolver {
   constructor(
     private readonly messagesService: MessageService,
     private readonly pubSubService: PubSub

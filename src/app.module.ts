@@ -4,37 +4,37 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import apolloConfig from "./configs/apollo.config";
 import databaseConfig from "./configs/database.config";
-import { MessageModule } from "./modules/message/message.module";
-import { ComplexityPlugin } from "./utilities/plugins/complexity.plugin";
-import { LoggingPlugin } from "./utilities/plugins/logging.plugin";
+import MessageModule from "./modules/message/message.module";
+import ComplexityPlugin from "./utilities/plugins/complexity.plugin";
+import LoggingPlugin from "./utilities/plugins/logging.plugin";
 
 @Module({
   imports: [
-    //--------------------//
+    // --------------------//
     // Env Configurations //
-    //--------------------//
+    // --------------------//
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    //-------------------------//
+    // -------------------------//
     // Database Configurations //
-    //-------------------------//
+    // -------------------------//
     TypeOrmModule.forRootAsync(databaseConfig),
-    //-------------------------------//
+    // -------------------------------//
     // GraphQL Server Configurations //
-    //-------------------------------//
+    // -------------------------------//
     GraphQLModule.forRoot(apolloConfig),
-    //---------------------//
+    // ---------------------//
     // Application Modules //
-    //---------------------//
+    // ---------------------//
     MessageModule,
   ],
   providers: [
-    //------------------------//
+    // ------------------------//
     // GraphQL Server Plugins //
-    //------------------------//
+    // ------------------------//
     LoggingPlugin,
     ComplexityPlugin,
   ],
 })
-export class AppModule {}
+export default class AppModule {}

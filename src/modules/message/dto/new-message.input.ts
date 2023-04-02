@@ -1,7 +1,7 @@
 import { Field, InputType } from "@nestjs/graphql";
 
 @InputType()
-export class NewMessageInput {
+export default class NewMessageInput {
   @Field()
   content: string;
 }

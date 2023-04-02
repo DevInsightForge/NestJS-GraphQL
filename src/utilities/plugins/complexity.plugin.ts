@@ -10,13 +10,14 @@ import {
 } from "graphql-query-complexity";
 
 @Plugin()
-export class ComplexityPlugin implements ApolloServerPlugin {
+export default class ComplexityPlugin implements ApolloServerPlugin {
   private readonly logger = new Logger("GraphQLComplexity");
+
   constructor(private gqlSchemaHost: GraphQLSchemaHost) {}
 
   async requestDidStart(): Promise<GraphQLRequestListener<any>> {
     const { schema } = this.gqlSchemaHost;
-    const logger = this.logger;
+    const { logger } = this;
 
     return {
       async didResolveOperation({ request, document }) {
