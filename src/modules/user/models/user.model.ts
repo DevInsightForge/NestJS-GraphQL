@@ -43,27 +43,27 @@ export default class User extends BaseEntity {
   @Exclude({ toPlainOnly: true })
   password: string;
 
-  @Field()
+  @Field(() => Date, { nullable: true })
   @CreateDateColumn({ name: "date_joined" })
   dateJoined: Date;
 
-  @Field()
+  @Field(() => Date, { nullable: true })
   @CreateDateColumn({ name: "last_login" })
   lastLogin: Date;
 
-  @Field()
+  @Field(() => Boolean, { nullable: true })
   @Column({ name: "is_active", default: true })
   isActive: boolean;
+
+  @Field(() => UserRole, { nullable: true })
+  @Column({ default: UserRole.user })
+  role: UserRole;
 
   @Field(() => [RefreshToken], { nullable: true })
   @OneToMany(() => RefreshToken, (token) => token.user, {
     eager: true,
   })
   sessions: RefreshToken[];
-
-  @Field(() => UserRole)
-  @Column({ default: UserRole.user })
-  role: UserRole;
 
   @Field(() => Boolean, { nullable: true })
   get isSuperadmin(): boolean {

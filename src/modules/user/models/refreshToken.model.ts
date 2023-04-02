@@ -38,6 +38,7 @@ export default class RefreshToken extends BaseEntity {
   @Column()
   device: string;
 
+  @HideField()
   @CreateDateColumn({ name: "valid_until" })
   validUntil: Date;
 
