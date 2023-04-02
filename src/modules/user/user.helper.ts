@@ -3,9 +3,9 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import type { Request, Response } from "express";
 import { GraphQLError } from "graphql";
-import jwt from "jsonwebtoken";
-import moment from "moment";
-import parser from "ua-parser-js";
+import * as jwt from "jsonwebtoken";
+import * as moment from "moment";
+import * as parser from "ua-parser-js";
 import RefreshToken from "./models/refreshToken.model";
 import type User from "./models/user.model";
 
@@ -23,55 +23,11 @@ interface RefreshTokensParams {
 export default class UserHelper {
   constructor(private configService: ConfigService) {}
 
-  generateAccessToken = async ({
-    res,
-    refreshToken,
-  }: AccessTokensParams): Promise<string> => {
-    const isProd = this.configService.get("NODE_ENV") === "production";
-    try {
-      const refreshTokenData = await RefreshToken.findOneByOrFail({
-        token: refreshToken,
-      });
-
-      if (!refreshTokenData.isActive) {
-        throw Error("Token expired!");
-      }
-      const accessToken = jwt.sign(
-        {
-          // id: refreshTokenData?.user.id,
-          // role: refreshTokenData?.user.role,
-        },
-        this.configService.get("SECRET", "DEFAULTJWTSECRET"),
-        {
-          expiresIn: "1h",
-        }
-      );
-      const accessExpires = moment().add(1, "hours").toDate();
-
-      res?.cookie("__a_t", accessToken, {
-        expires: accessExpires,
-        path: "/graphql",
-        httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? "none" : "lax",
-      });
-
-      return accessToken;
-    } catch (error) {
-      throw new GraphQLError("Something went wrong", {
-        extensions: {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          error,
-        },
-      });
-    }
-  };
-
   generateRefreshToken = async ({
     req,
     res,
     user,
-  }: RefreshTokensParams): Promise<string> => {
+  }: RefreshTokensParams): Promise<void> => {
     const isProd = this.configService.get("NODE_ENV") === "production";
     const refrshExpires = moment().add(7, "days").toDate();
     const { browser, os, device } = parser(req.headers["user-agent"]);
@@ -104,6 +60,43 @@ export default class UserHelper {
       sameSite: isProd ? "none" : "lax",
     });
 
-    return refreshToken.token;
+    await this.generateAccessToken({ res, refreshToken: refreshToken.token });
+  };
+
+  generateAccessToken = async ({
+    res,
+    refreshToken,
+  }: AccessTokensParams): Promise<void> => {
+    const isProd = this.configService.get("NODE_ENV") === "production";
+    try {
+      const refreshTokenData = await RefreshToken.findOneByOrFail({
+        token: refreshToken,
+      });
+
+      if (!refreshTokenData.isActive) {
+        throw Error("Token expired!");
+      }
+      const accessToken = jwt.sign(
+        {
+          // id: refreshTokenData?.user.id,
+          // role: refreshTokenData?.user.role,
+        },
+        this.configService.get("SECRET", "DEFAULTJWTSECRET"),
+        {
+          expiresIn: "1h",
+        }
+      );
+      const accessExpires = moment().add(1, "hours").toDate();
+
+      res?.cookie("__a_t", accessToken, {
+        expires: accessExpires,
+        path: "/graphql",
+        httpOnly: true,
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
+      });
+    } catch ({ message }) {
+      throw new GraphQLError(message as string);
+    }
   };
 }

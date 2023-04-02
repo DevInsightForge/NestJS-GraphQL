@@ -1,24 +1,30 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, HideField, ObjectType } from "@nestjs/graphql";
+import { Exclude } from "class-transformer";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
-  //   OneToMany,
+  JoinTable,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import User from "./user.model";
 
 @ObjectType()
 @Entity({ name: "refresh_token" })
 export default class RefreshToken extends BaseEntity {
+  @HideField()
+  @Exclude({ toPlainOnly: true })
   @PrimaryGeneratedColumn("uuid")
   token: string;
 
-  // @JoinTable()
-  // @ManyToOne(() => User, (user) => user.sessions, {
-  //   cascade: true,
-  // })
-  // user: User;
+  @JoinTable()
+  @HideField()
+  @ManyToOne(() => User, (user) => user.sessions, {
+    cascade: true,
+  })
+  user: User;
 
   @Field()
   @Column()

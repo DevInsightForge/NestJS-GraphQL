@@ -1,12 +1,20 @@
-import { Field, ID, ObjectType, registerEnumType } from "@nestjs/graphql";
+import {
+  Field,
+  HideField,
+  ID,
+  ObjectType,
+  registerEnumType,
+} from "@nestjs/graphql";
+import { Exclude } from "class-transformer";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
-  //   OneToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import RefreshToken from "./refreshToken.model";
 
 export enum UserRole {
   superadmin = "superadmin",
@@ -30,7 +38,9 @@ export default class User extends BaseEntity {
   @Column({ unique: true })
   email: string;
 
+  @HideField()
   @Column()
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @Field()
@@ -45,11 +55,11 @@ export default class User extends BaseEntity {
   @Column({ name: "is_active", default: true })
   isActive: boolean;
 
-  //   @Field(() => [RefreshToken], { nullable: true })
-  //   @OneToMany(() => RefreshToken, (token) => token.user, {
-  //     eager: true,
-  //   })
-  //   sessions: RefreshToken[];
+  @Field(() => [RefreshToken], { nullable: true })
+  @OneToMany(() => RefreshToken, (token) => token.user, {
+    eager: true,
+  })
+  sessions: RefreshToken[];
 
   @Field(() => UserRole)
   @Column({ default: UserRole.user })
