@@ -24,6 +24,7 @@ export default class RefreshToken extends BaseEntity {
   @HideField()
   @ManyToOne(() => User, (user) => user.sessions, {
     cascade: true,
+    eager: true,
   })
   user: Relation<User>;
 

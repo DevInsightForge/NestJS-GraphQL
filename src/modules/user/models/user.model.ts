@@ -62,9 +62,7 @@ export default class User extends BaseEntity {
 
   // @Field(() => [RefreshToken], { nullable: true })
   @HideField()
-  @OneToMany(() => RefreshToken, (token) => token.user, {
-    eager: true,
-  })
+  @OneToMany(() => RefreshToken, (token) => token.user)
   sessions: Relation<RefreshToken[]>;
 
   @Field(() => Boolean, { nullable: true })

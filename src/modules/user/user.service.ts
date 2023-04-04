@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
 import { compare, hash } from "bcryptjs";
 import type { Request, Response } from "express";
 import { GraphQLError } from "graphql";
-import * as jwt from "jsonwebtoken";
 import * as moment from "moment";
 import * as parser from "ua-parser-js";
 import LoginInput from "./dto/login.input";
@@ -24,7 +24,10 @@ interface RefreshTokensParams {
 
 @Injectable()
 export default class UserService {
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    private jwtService: JwtService
+  ) {}
 
   async allUsers({ take, skip }: UserArgs): Promise<User[]> {
     const result = await User.find({
@@ -119,33 +122,28 @@ export default class UserService {
     refreshToken,
   }: AccessTokensParams): Promise<void> {
     const isProd = this.configService.get("NODE_ENV") === "production";
+    const expirationTime = 1 * 60 * 60; // hour * minute * second
     try {
       const refreshTokenData = await RefreshToken.findOneBy({
         token: refreshToken,
       });
 
-      if (!refreshTokenData) {
-        throw Error("Invalid refresh token");
+      if (!refreshTokenData?.isActive) {
+        throw Error("Token is invalid or has been expired");
       }
 
-      if (!refreshTokenData.isActive) {
-        throw Error("Token has expired");
-      }
-
-      const accessToken = jwt.sign(
+      const accessToken = await this.jwtService.signAsync(
         {
-          // id: refreshTokenData?.user.id,
-          // role: refreshTokenData?.user.role,
+          id: refreshTokenData?.user?.id,
+          role: refreshTokenData?.user?.role,
         },
-        this.configService.get("SECRET", "DEFAULTJWTSECRET"),
         {
-          expiresIn: "1h",
+          expiresIn: expirationTime,
         }
       );
-      const accessExpires = moment().add(1, "hours").toDate();
 
       res?.cookie("__a_t", accessToken, {
-        expires: accessExpires,
+        maxAge: expirationTime * 1000,
         path: "/graphql",
         httpOnly: true,
         secure: isProd,
