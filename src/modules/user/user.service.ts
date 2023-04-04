@@ -4,8 +4,7 @@ import { JwtService } from "@nestjs/jwt";
 import { compare, hash } from "bcryptjs";
 import type { Request, Response } from "express";
 import { GraphQLError } from "graphql";
-import * as moment from "moment";
-import * as parser from "ua-parser-js";
+import * as UAParser from "ua-parser-js";
 import LoginInput from "./dto/login.input";
 import RegisterInput from "./dto/register.input";
 import UserArgs from "./dto/user.args";
@@ -83,8 +82,10 @@ export default class UserService {
     user,
   }: RefreshTokensParams): Promise<void> {
     const isProd = this.configService.get("NODE_ENV") === "production";
-    const refrshExpires = moment().add(7, "days").toDate();
-    const { browser, os, device } = parser(req.headers["user-agent"]);
+    const { browser, os, device } = UAParser(req.headers["user-agent"]);
+
+    const refrshExpires = new Date();
+    refrshExpires.setDate(refrshExpires.getDay() + 7);
 
     const refreshPayload = {
       browser: `${browser?.name ?? ""} ${browser?.version ?? ""}`,
@@ -143,7 +144,7 @@ export default class UserService {
       );
 
       res?.cookie("__a_t", accessToken, {
-        maxAge: expirationTime * 1000,
+        maxAge: expirationTime * 1000, // expirationTime * milisecond
         path: "/graphql",
         httpOnly: true,
         secure: isProd,
