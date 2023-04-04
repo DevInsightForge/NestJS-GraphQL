@@ -15,6 +15,7 @@ interface AccessTokensParams {
   res?: Response;
   refreshToken?: string;
 }
+
 interface RefreshTokensParams {
   req?: Request;
   res?: Response;
@@ -38,7 +39,7 @@ export default class UserService {
     return result;
   }
 
-  async getSessions(userId: string): Promise<RefreshToken[]> {
+  async getSessions(userId = ""): Promise<RefreshToken[]> {
     const sessions = await RefreshToken.findBy({
       user: { id: userId },
     });

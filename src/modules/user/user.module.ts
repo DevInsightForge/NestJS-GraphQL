@@ -16,6 +16,7 @@ import UserService from "./user.service";
         secret: configService.get<string>("SECRET", "DEFAULTJWTSECRET"),
       }),
       inject: [ConfigService],
+      global: true,
     }),
   ],
   providers: [UserService, UserResolver],

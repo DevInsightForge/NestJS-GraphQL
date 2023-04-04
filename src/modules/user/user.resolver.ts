@@ -1,5 +1,7 @@
 import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
 import type { Request, Response } from "express";
+import { IsPublic } from "src/utilities/service/authGuard.service";
+import parseAuthCookies from "src/utilities/tools/parseAuthCookies";
 import LoginInput from "./dto/login.input";
 import RegisterInput from "./dto/register.input";
 import UserArgs from "./dto/user.args";
@@ -12,17 +14,16 @@ export default class UserResolver {
   constructor(private readonly usersService: UserService) {}
 
   @Query(() => [User])
-  users(@Args() usersArgs: UserArgs): Promise<User[]> {
+  allUsers(@Args() usersArgs: UserArgs): Promise<User[]> {
     return this.usersService.allUsers(usersArgs);
   }
 
   @Query(() => [RefreshToken])
-  sessions(
-    @Args("userId", { nullable: true }) userId: string
-  ): Promise<RefreshToken[]> {
+  userSessions(@Context("userId") userId: string): Promise<RefreshToken[]> {
     return this.usersService.getSessions(userId);
   }
 
+  @IsPublic()
   @Mutation(() => User, { nullable: true })
   async login(
     @Args("input") loginInput: LoginInput,
@@ -58,11 +59,10 @@ export default class UserResolver {
 
   @Mutation(() => Boolean, { nullable: true })
   async refreshAccessToken(
-    @Args("refreshToken")
-    refreshToken: string,
     @Context("req") req: Request,
     @Context("res") res: Response
   ): Promise<boolean> {
+    const { __r_t: refreshToken } = parseAuthCookies(req);
     await this.usersService.generateAccessToken({
       res,
       refreshToken,

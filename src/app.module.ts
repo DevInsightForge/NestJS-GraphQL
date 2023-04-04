@@ -8,6 +8,7 @@ import MessageModule from "./modules/message/message.module";
 import UserModule from "./modules/user/user.module";
 import ComplexityPlugin from "./utilities/plugins/complexity.plugin";
 import LoggingPlugin from "./utilities/plugins/logging.plugin";
+import AuthGuardProvider from "./utilities/providers/authGuard.provider";
 import ValidationProvider from "./utilities/providers/validation.provider";
 
 @Module({
@@ -37,6 +38,7 @@ import ValidationProvider from "./utilities/providers/validation.provider";
     // Nest Server Plugins //
     // --------------------//
     ValidationProvider,
+    AuthGuardProvider,
     // -----------------------//
     // GraphQL Server Plugins //
     // -----------------------//

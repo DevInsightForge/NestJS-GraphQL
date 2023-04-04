@@ -24,7 +24,8 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "class-methods-use-this": "off",
-    "import/no-cycle": "off"
+    "import/no-cycle": "off",
+    "no-underscore-dangle": ["error", { "allow": ["__a_t", "__r_t"] }]
   }
 }
 
