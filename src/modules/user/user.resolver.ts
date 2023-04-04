@@ -40,6 +40,7 @@ export default class UserResolver {
     return user;
   }
 
+  @IsPublic()
   @Mutation(() => User, { nullable: true })
   async register(
     @Args("input")
@@ -57,6 +58,7 @@ export default class UserResolver {
     return user;
   }
 
+  @IsPublic()
   @Mutation(() => Boolean, { nullable: true })
   async refreshAccessToken(
     @Context("req") req: Request,

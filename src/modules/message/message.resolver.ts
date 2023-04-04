@@ -1,6 +1,7 @@
 import { NotFoundException } from "@nestjs/common";
 import { Args, Mutation, Query, Resolver, Subscription } from "@nestjs/graphql";
 import { PubSub } from "graphql-subscriptions";
+import { IsPublic } from "src/utilities/service/authGuard.service";
 import MessageArgs from "./dto/message.args";
 import NewMessageInput from "./dto/new-message.input";
 import MessageService from "./message.service";
@@ -41,6 +42,7 @@ export default class MessageResolver {
     return this.messagesService.remove(id);
   }
 
+  @IsPublic()
   @Subscription(() => Message)
   messageAdded() {
     return this.pubSubService.asyncIterator("messageAdded");
