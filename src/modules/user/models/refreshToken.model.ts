@@ -8,6 +8,7 @@ import {
   JoinTable,
   ManyToOne,
   PrimaryGeneratedColumn,
+  Relation,
 } from "typeorm";
 import User from "./user.model";
 
@@ -24,7 +25,7 @@ export default class RefreshToken extends BaseEntity {
   @ManyToOne(() => User, (user) => user.sessions, {
     cascade: true,
   })
-  user: User;
+  user: Relation<User>;
 
   @Field()
   @Column()

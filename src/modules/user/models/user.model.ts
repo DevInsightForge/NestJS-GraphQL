@@ -13,6 +13,7 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
+  Relation,
 } from "typeorm";
 import RefreshToken from "./refreshToken.model";
 
@@ -59,11 +60,12 @@ export default class User extends BaseEntity {
   @Column({ default: UserRole.user })
   role: UserRole;
 
-  @Field(() => [RefreshToken], { nullable: true })
+  // @Field(() => [RefreshToken], { nullable: true })
+  @HideField()
   @OneToMany(() => RefreshToken, (token) => token.user, {
     eager: true,
   })
-  sessions: RefreshToken[];
+  sessions: Relation<RefreshToken[]>;
 
   @Field(() => Boolean, { nullable: true })
   get isSuperadmin(): boolean {

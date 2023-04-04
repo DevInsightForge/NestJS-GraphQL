@@ -8,6 +8,7 @@ import * as moment from "moment";
 import * as parser from "ua-parser-js";
 import LoginInput from "./dto/login.input";
 import RegisterInput from "./dto/register.input";
+import UserArgs from "./dto/user.args";
 import RefreshToken from "./models/refreshToken.model";
 import User from "./models/user.model";
 
@@ -24,6 +25,16 @@ interface RefreshTokensParams {
 @Injectable()
 export default class UserService {
   constructor(private configService: ConfigService) {}
+
+  async allUsers({ take, skip }: UserArgs): Promise<User[]> {
+    const result = await User.find({
+      take,
+      skip,
+      order: { dateJoined: "DESC" },
+    });
+
+    return result;
+  }
 
   async userLogin({ email, password }: LoginInput): Promise<User> {
     try {

@@ -1,7 +1,8 @@
-import { Args, Context, Mutation, Resolver } from "@nestjs/graphql";
+import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
 import type { Request, Response } from "express";
 import LoginInput from "./dto/login.input";
 import RegisterInput from "./dto/register.input";
+import UserArgs from "./dto/user.args";
 import User from "./models/user.model";
 import UserService from "./user.service";
 
@@ -9,10 +10,10 @@ import UserService from "./user.service";
 export default class UserResolver {
   constructor(private readonly usersService: UserService) {}
 
-  //   @Query(() => [User])
-  //   users(@Args() usersArgs: UserArgs): Promise<User[]> {
-  //     return this.usersService.findAll(usersArgs);
-  //   }
+  @Query(() => [User])
+  users(@Args() usersArgs: UserArgs): Promise<User[]> {
+    return this.usersService.allUsers(usersArgs);
+  }
 
   @Mutation(() => User, { nullable: true })
   async login(
