@@ -36,6 +36,13 @@ export default class UserService {
     return result;
   }
 
+  async getSessions(userId: string): Promise<RefreshToken[]> {
+    const sessions = await RefreshToken.findBy({
+      user: { id: userId },
+    });
+    return sessions;
+  }
+
   async userLogin({ email, password }: LoginInput): Promise<User> {
     try {
       const user = await User.findOneByOrFail({

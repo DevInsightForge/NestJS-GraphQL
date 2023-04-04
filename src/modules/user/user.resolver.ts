@@ -3,6 +3,7 @@ import type { Request, Response } from "express";
 import LoginInput from "./dto/login.input";
 import RegisterInput from "./dto/register.input";
 import UserArgs from "./dto/user.args";
+import RefreshToken from "./models/refreshToken.model";
 import User from "./models/user.model";
 import UserService from "./user.service";
 
@@ -13,6 +14,13 @@ export default class UserResolver {
   @Query(() => [User])
   users(@Args() usersArgs: UserArgs): Promise<User[]> {
     return this.usersService.allUsers(usersArgs);
+  }
+
+  @Query(() => [RefreshToken])
+  sessions(
+    @Args("userId", { nullable: true }) userId: string
+  ): Promise<RefreshToken[]> {
+    return this.usersService.getSessions(userId);
   }
 
   @Mutation(() => User, { nullable: true })
