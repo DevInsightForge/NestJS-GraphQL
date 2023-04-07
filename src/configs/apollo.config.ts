@@ -14,6 +14,7 @@ const apolloConfig: ApolloDriverConfig = {
   driver: ApolloDriver,
   autoSchemaFile: true,
   playground: false,
+  introspection: true,
   plugins: [ApolloServerPluginLandingPageLocalDefault()],
   subscriptions: {
     "graphql-ws": true,
