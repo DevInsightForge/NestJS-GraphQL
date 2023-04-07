@@ -1,12 +1,12 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { config as loadEnvConfigs } from "dotenv";
-import { join } from "path";
 import { DataSource } from "typeorm";
+import { userRefreshMessage1680887435923 } from "../migrations/1680887435923-user-refresh-message";
+import Message from "../modules/message/models/message.model";
+import RefreshToken from "../modules/user/models/refreshToken.model";
+import User from "../modules/user/models/user.model";
 
 loadEnvConfigs();
-
-export const modelEntries = join(__dirname, "../modules/**/*.model.ts");
-export const migrationsEntries = join(__dirname, "../migrations/*.ts");
 
 const AppDataSource = new DataSource({
   type: "postgres",
@@ -18,8 +18,8 @@ const AppDataSource = new DataSource({
   synchronize: false,
   dropSchema: false,
   logging: false,
-  entities: [modelEntries],
-  migrations: [migrationsEntries],
+  entities: [User, RefreshToken, Message],
+  migrations: [userRefreshMessage1680887435923],
 });
 
 export default AppDataSource;

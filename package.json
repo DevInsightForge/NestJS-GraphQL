@@ -8,9 +8,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "build": "nest build",
-    "migration:generate": "typeorm-ts-node-esm -d ./src/configs/typeorm.config.ts migration:generate -p ./src/migrations/schema",
-    "migration:migrate": "typeorm-ts-node-esm -d ./src/configs/typeorm.config.ts migration:run",
-    "migration:revert": "typeorm-ts-node-esm -d ./src/configs/typeorm.config.ts migration:revert",
+    "typeorm": "typeorm-ts-node-esm -d ./src/configs/typeorm.config.ts",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint": "eslint src/**/*.ts --fix"
   },
