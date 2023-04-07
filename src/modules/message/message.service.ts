@@ -5,8 +5,8 @@ import Message from "./models/message.model";
 
 @Injectable()
 export default class MessageService {
-  async create(data: NewMessageInput): Promise<Message> {
-    return Message.create({ ...data }).save();
+  async create(data: NewMessageInput, userId: string): Promise<Message> {
+    return Message.create({ ...data, user: { id: userId } }).save();
   }
 
   async findOneById(id: string): Promise<Message> {

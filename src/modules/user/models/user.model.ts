@@ -15,6 +15,7 @@ import {
   PrimaryGeneratedColumn,
   Relation,
 } from "typeorm";
+import Message from "../../message/models/message.model";
 import RefreshToken from "./refreshToken.model";
 
 export enum UserRole {
@@ -64,6 +65,10 @@ export default class User extends BaseEntity {
   @HideField()
   @OneToMany(() => RefreshToken, (token) => token.user)
   sessions: Relation<RefreshToken[]>;
+
+  @HideField()
+  @OneToMany(() => Message, (message) => message.user)
+  messages: Relation<Message[]>;
 
   @Field(() => Boolean, { nullable: true })
   get isSuperadmin(): boolean {
