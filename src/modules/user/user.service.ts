@@ -52,6 +52,9 @@ export default class UserService {
         throw new Error("Invalid login credentials");
       }
 
+      user.lastLogin = new Date();
+      await user.save();
+
       return user;
     } catch ({ message }) {
       throw new GraphQLError(message as string);
