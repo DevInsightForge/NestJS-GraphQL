@@ -1,27 +1,16 @@
-import { NotFoundException } from "@nestjs/common";
 import { Args, Mutation, Query, Resolver, Subscription } from "@nestjs/graphql";
 import { PubSub } from "graphql-subscriptions";
-import { IsPublic } from "src/utilities/service/authGuard.service";
 import MessageArgs from "./dto/message.args";
 import NewMessageInput from "./dto/new-message.input";
 import MessageService from "./message.service";
 import Message from "./models/message.model";
 
-@Resolver(() => Message)
+@Resolver()
 export default class MessageResolver {
   constructor(
     private readonly messagesService: MessageService,
     private readonly pubSubService: PubSub
   ) {}
-
-  @Query(() => Message)
-  async message(@Args("id") id: string): Promise<Message> {
-    const message = await this.messagesService.findOneById(id);
-    if (!message) {
-      throw new NotFoundException(id);
-    }
-    return message;
-  }
 
   @Query(() => [Message])
   messages(@Args() messagesArgs: MessageArgs): Promise<Message[]> {
@@ -42,7 +31,6 @@ export default class MessageResolver {
     return this.messagesService.remove(id);
   }
 
-  @IsPublic()
   @Subscription(() => Message)
   messageAdded() {
     return this.pubSubService.asyncIterator("messageAdded");

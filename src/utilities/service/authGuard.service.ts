@@ -34,6 +34,7 @@ export default class AuthGuardService implements CanActivate {
 
     const gqlCtx = GqlExecutionContext.create(context);
     const ctx: ContextType = gqlCtx.getContext();
+
     const token = this.extractTokenFromHeader(ctx.req);
 
     if (!token) {
@@ -56,7 +57,8 @@ export default class AuthGuardService implements CanActivate {
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(" ") ?? [];
+    const [type = null, token = null] =
+      request?.headers?.authorization?.split(" ") ?? [];
     return type === "Bearer" ? token : undefined;
   }
 }
