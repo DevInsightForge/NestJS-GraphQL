@@ -10,11 +10,7 @@ import RegisterInput from "./dto/register.input";
 import UserArgs from "./dto/user.args";
 import RefreshToken from "./models/refreshToken.model";
 import User from "./models/user.model";
-
-interface AccessTokensParams {
-  res?: Response;
-  refreshToken?: string;
-}
+import JwtTokens from "./types/jwtToken.type";
 
 interface RefreshTokensParams {
   req?: Request;
@@ -79,10 +75,8 @@ export default class UserService {
 
   async generateRefreshToken({
     req,
-    res,
     user,
-  }: RefreshTokensParams): Promise<void> {
-    const isProd = this.configService.get("NODE_ENV") === "production";
+  }: RefreshTokensParams): Promise<JwtTokens> {
     const { browser, os, device } = UAParser(req.headers["user-agent"]);
 
     const refrshExpires = new Date();
@@ -95,64 +89,57 @@ export default class UserService {
       user: { id: user?.id },
     };
 
-    let refreshToken: RefreshToken;
+    let refresh: RefreshToken;
     try {
-      refreshToken = await RefreshToken.findOneByOrFail({ ...refreshPayload });
+      refresh = await RefreshToken.findOneByOrFail({
+        ...refreshPayload,
+      });
 
-      refreshToken.validUntil = refrshExpires;
-      await refreshToken.save();
+      if (!refresh.isActive) {
+        throw Error();
+      }
+
+      refresh.validUntil = refrshExpires;
+      await refresh.save();
     } catch (_) {
-      refreshToken = await RefreshToken.create({
+      refresh = await RefreshToken.create({
         ...refreshPayload,
         validUntil: refrshExpires,
       }).save();
     }
 
-    res?.cookie("__r_t", refreshToken.token, {
-      expires: refrshExpires,
-      path: "/graphql",
-      httpOnly: true,
-      secure: isProd,
-      sameSite: isProd ? "none" : "lax",
-    });
+    const accessToken = await this.generateAccessToken(refresh.token);
 
-    await this.generateAccessToken({ res, refreshToken: refreshToken.token });
+    return {
+      refreshToken: refresh.token,
+      accessToken,
+    };
   }
 
-  async generateAccessToken({
-    res,
-    refreshToken,
-  }: AccessTokensParams): Promise<void> {
-    const isProd = this.configService.get("NODE_ENV") === "production";
+  async generateAccessToken(refreshToken: string): Promise<string> {
     const expirationTime = 1 * 60 * 60; // hour * minute * second
     try {
-      const refreshTokenData = await RefreshToken.findOneBy({
+      const refresh = await RefreshToken.findOneBy({
         token: refreshToken,
       });
 
-      if (!refreshTokenData?.isActive) {
-        throw Error("Token is invalid or has been expired");
+      if (!refresh.isActive) {
+        throw Error();
       }
 
       const accessToken = await this.jwtService.signAsync(
         {
-          id: refreshTokenData?.user?.id,
-          role: refreshTokenData?.user?.role,
+          id: refresh?.user?.id,
+          role: refresh?.user?.role,
         },
         {
           expiresIn: expirationTime,
         }
       );
 
-      res?.cookie("__a_t", accessToken, {
-        maxAge: expirationTime * 1000, // expirationTime * milisecond
-        path: "/graphql",
-        httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? "none" : "lax",
-      });
+      return accessToken;
     } catch ({ message }) {
-      throw new GraphQLError(message as string);
+      throw new GraphQLError("Token is invalid or has been expired");
     }
   }
 }

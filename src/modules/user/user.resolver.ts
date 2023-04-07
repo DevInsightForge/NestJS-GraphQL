@@ -1,15 +1,15 @@
 import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
-import type { Request, Response } from "express";
+import type { Request } from "express";
 import { IsPublic } from "src/utilities/service/authGuard.service";
-import parseAuthCookies from "src/utilities/tools/parseAuthCookies";
 import LoginInput from "./dto/login.input";
 import RegisterInput from "./dto/register.input";
 import UserArgs from "./dto/user.args";
 import RefreshToken from "./models/refreshToken.model";
 import User from "./models/user.model";
+import JwtTokens from "./types/jwtToken.type";
 import UserService from "./user.service";
 
-@Resolver(() => User)
+@Resolver()
 export default class UserResolver {
   constructor(private readonly usersService: UserService) {}
 
@@ -24,51 +24,45 @@ export default class UserResolver {
   }
 
   @IsPublic()
-  @Mutation(() => User, { nullable: true })
+  @Mutation(() => JwtTokens)
   async login(
     @Args("input") loginInput: LoginInput,
-    @Context("req") req: Request,
-    @Context("res") res: Response
-  ): Promise<User> {
+    @Context("req") req: Request
+  ): Promise<JwtTokens> {
     const user = await this.usersService.userLogin(loginInput);
-    await this.usersService.generateRefreshToken({
+    const tokens = await this.usersService.generateRefreshToken({
       req,
-      res,
       user,
     });
 
-    return user;
+    return tokens;
   }
 
   @IsPublic()
-  @Mutation(() => User, { nullable: true })
+  @Mutation(() => JwtTokens)
   async register(
     @Args("input")
     registerInput: RegisterInput,
-    @Context("req") req: Request,
-    @Context("res") res: Response
-  ): Promise<User> {
+    @Context("req") req: Request
+  ): Promise<JwtTokens> {
     const user = await this.usersService.userRegister(registerInput);
-    await this.usersService.generateRefreshToken({
+    const tokens = await this.usersService.generateRefreshToken({
       req,
-      res,
       user,
     });
 
-    return user;
+    return tokens;
   }
 
   @IsPublic()
-  @Mutation(() => Boolean, { nullable: true })
+  @Mutation(() => String, { nullable: true })
   async refreshAccessToken(
-    @Context("req") req: Request,
-    @Context("res") res: Response
-  ): Promise<boolean> {
-    const { __r_t: refreshToken } = parseAuthCookies(req);
-    await this.usersService.generateAccessToken({
-      res,
-      refreshToken,
-    });
-    return true;
+    @Args("refreshToken") refreshToken: string
+  ): Promise<string> {
+    const accessToken = await this.usersService.generateAccessToken(
+      refreshToken
+    );
+
+    return accessToken;
   }
 }

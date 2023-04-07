@@ -1,16 +1,7 @@
-import type { Request, Response } from "express";
-
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 
-export interface ContextType {
-  req?: Request;
-  res?: Response;
-  userId?: string | undefined;
-  userRole?: string | undefined;
-}
-
-const apolloConfig: ApolloDriverConfig = {
+export const apolloConfig: ApolloDriverConfig = {
   driver: ApolloDriver,
   autoSchemaFile: true,
   playground: false,

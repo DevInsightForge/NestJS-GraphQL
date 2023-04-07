@@ -8,10 +8,9 @@ import { ConfigService } from "@nestjs/config";
 import { Reflector } from "@nestjs/core";
 import { GqlExecutionContext } from "@nestjs/graphql";
 import { JwtService } from "@nestjs/jwt";
+import type { Request } from "express";
 import { GraphQLError } from "graphql";
-import { ContextType } from "src/configs/apollo.config";
 import User from "src/modules/user/models/user.model";
-import parseAuthCookies from "../tools/parseAuthCookies";
 
 const IS_PUBLIC_KEY = "isPublic";
 export const IsPublic = () => SetMetadata(IS_PUBLIC_KEY, true);
@@ -35,7 +34,7 @@ export default class AuthGuardService implements CanActivate {
 
     const gqlCtx = GqlExecutionContext.create(context);
     const ctx: ContextType = gqlCtx.getContext();
-    const { __a_t: token } = parseAuthCookies(ctx.req);
+    const token = this.extractTokenFromHeader(ctx.req);
 
     if (!token) {
       throw new GraphQLError("Forbidden resource", {
@@ -54,5 +53,10 @@ export default class AuthGuardService implements CanActivate {
       });
     }
     return true;
+  }
+
+  private extractTokenFromHeader(request: Request): string | undefined {
+    const [type, token] = request.headers.authorization?.split(" ") ?? [];
+    return type === "Bearer" ? token : undefined;
   }
 }
