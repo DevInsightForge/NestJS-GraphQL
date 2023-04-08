@@ -13,14 +13,19 @@ import UserService from "./user.service";
 export default class UserResolver {
   constructor(private readonly usersService: UserService) {}
 
-  @Query(() => [User])
-  allUsers(@Args() usersArgs: UserArgs): Promise<User[]> {
-    return this.usersService.allUsers(usersArgs);
+  @Query(() => User)
+  userProfile(@Context("userId") userId: string): Promise<User> {
+    return this.usersService.getUser(userId);
   }
 
   @Query(() => [RefreshToken])
   userSessions(@Context("userId") userId: string): Promise<RefreshToken[]> {
     return this.usersService.getSessions(userId);
+  }
+
+  @Query(() => [User])
+  allUsers(@Args() usersArgs: UserArgs): Promise<User[]> {
+    return this.usersService.allUsers(usersArgs);
   }
 
   @IsPublic()

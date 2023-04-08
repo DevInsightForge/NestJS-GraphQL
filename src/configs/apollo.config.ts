@@ -32,7 +32,6 @@ const apolloConfig: ApolloDriverConfig = {
             ...params,
           },
         },
-        res,
       };
     }
     return {

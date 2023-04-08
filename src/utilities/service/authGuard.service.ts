@@ -38,8 +38,8 @@ export default class AuthGuardService implements CanActivate {
     const token = this.extractTokenFromHeader(ctx.req);
 
     if (!token) {
-      throw new GraphQLError("Forbidden resource", {
-        extensions: { code: "FORBIDDEN" },
+      throw new GraphQLError("You are not authorized for this operation", {
+        extensions: { code: "UNAUTHORIZED" },
       });
     }
     try {
@@ -49,8 +49,8 @@ export default class AuthGuardService implements CanActivate {
       ctx.userId = payload?.id;
       ctx.userRole = payload.role;
     } catch {
-      throw new GraphQLError("Invalid token", {
-        extensions: { code: "FORBIDDEN" },
+      throw new GraphQLError("Token is invalid or expired", {
+        extensions: { code: "UNAUTHORIZED" },
       });
     }
     return true;

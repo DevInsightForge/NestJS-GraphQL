@@ -25,6 +25,13 @@ export default class UserService {
     private jwtService: JwtService
   ) {}
 
+  async getUser(userId: string): Promise<User> {
+    const user = await User.findOneByOrFail({
+      id: userId,
+    });
+    return user;
+  }
+
   async allUsers({ take, skip }: UserArgs): Promise<User[]> {
     const result = await User.find({
       take,
