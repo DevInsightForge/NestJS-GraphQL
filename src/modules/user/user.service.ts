@@ -90,7 +90,7 @@ export default class UserService {
     const { browser, os, device } = UAParser(req.headers["user-agent"]);
 
     const refrshExpires = new Date();
-    refrshExpires.setDate(refrshExpires.getDay() + 7);
+    refrshExpires.setDate(refrshExpires.getDate() + 1); // lets set to 1 day for now
 
     const refreshPayload = {
       browser: `${browser?.name ?? ""} ${browser?.version ?? ""}`,
@@ -133,7 +133,7 @@ export default class UserService {
         token: refreshToken,
       });
 
-      if (!refresh.isActive) {
+      if (!refresh?.isActive) {
         throw Error();
       }
 
@@ -148,7 +148,7 @@ export default class UserService {
       );
 
       return accessToken;
-    } catch ({ message }) {
+    } catch (_) {
       throw new GraphQLError("Token is invalid or has been expired");
     }
   }
