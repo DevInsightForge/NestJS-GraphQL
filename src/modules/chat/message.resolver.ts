@@ -7,7 +7,7 @@ import {
   Subscription,
 } from "@nestjs/graphql";
 import { PubSub } from "graphql-subscriptions";
-import PaginationArgs from "src/utilities/dto/pagination.args";
+import MessageArgs from "../../utilities/dto/pagination.args";
 import NewMessageInput from "./dto/new-message.input";
 import MessageService from "./message.service";
 import Message from "./models/message.model";
@@ -20,8 +20,8 @@ export default class MessageResolver {
   ) {}
 
   @Query(() => [Message])
-  messages(@Args() paginationArgs: PaginationArgs): Promise<Message[]> {
-    return this.messagesService.findAll(paginationArgs);
+  messages(@Args() messagesArgs: MessageArgs): Promise<Message[]> {
+    return this.messagesService.findAll(messagesArgs);
   }
 
   @Mutation(() => Message)

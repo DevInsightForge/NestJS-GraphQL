@@ -1,9 +1,9 @@
 import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
 import type { Request } from "express";
+import PaginationArgs from "src/utilities/dto/pagination.args";
 import { IsPublic } from "src/utilities/service/authGuard.service";
 import LoginInput from "./dto/login.input";
 import RegisterInput from "./dto/register.input";
-import UserArgs from "./dto/user.args";
 import RefreshToken from "./models/refreshToken.model";
 import User from "./models/user.model";
 import JwtTokens from "./types/jwtToken.type";
@@ -24,8 +24,8 @@ export default class UserResolver {
   }
 
   @Query(() => [User])
-  allUsers(@Args() usersArgs: UserArgs): Promise<User[]> {
-    return this.usersService.allUsers(usersArgs);
+  allUsers(@Args() paginationArgs: PaginationArgs): Promise<User[]> {
+    return this.usersService.allUsers(paginationArgs);
   }
 
   @IsPublic()
