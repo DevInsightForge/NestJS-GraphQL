@@ -35,7 +35,7 @@ export default class AuthGuardService implements CanActivate {
     const gqlCtx = GqlExecutionContext.create(context);
     const ctx: ContextType = gqlCtx.getContext();
 
-    const token = this.extractTokenFromHeader(ctx.req);
+    const token = this.extractTokenFromRequest(ctx.req);
 
     if (!token) {
       throw new GraphQLError("You are not authorized for this operation", {
@@ -56,9 +56,13 @@ export default class AuthGuardService implements CanActivate {
     return true;
   }
 
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const [type = null, token = null] =
+  private extractTokenFromRequest(request: Request): string | undefined {
+    const [type = "", headerToken = undefined] =
       request?.headers?.authorization?.split(" ") ?? [];
-    return type === "Bearer" ? token : undefined;
+
+    const cookieToken =
+      (request?.cookies as Cookies)?.authorization ?? undefined;
+
+    return type === "Bearer" ? headerToken : cookieToken;
   }
 }

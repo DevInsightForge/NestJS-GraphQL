@@ -10,7 +10,6 @@ import LoginInput from "./dto/login.input";
 import RegisterInput from "./dto/register.input";
 import RefreshToken from "./models/refreshToken.model";
 import User from "./models/user.model";
-import JwtTokens from "./types/jwtToken.type";
 
 interface RefreshTokensParams {
   req?: Request;
@@ -86,7 +85,7 @@ export default class UserService {
   async generateRefreshToken({
     req,
     user,
-  }: RefreshTokensParams): Promise<JwtTokens> {
+  }: RefreshTokensParams): Promise<string> {
     const { browser, os, device } = UAParser(req.headers["user-agent"]);
 
     let refresh: RefreshToken;
@@ -94,8 +93,8 @@ export default class UserService {
     refrshExpires.setDate(refrshExpires.getDate() + 1); // lets set to 1 day for now
 
     const refreshPayload = {
-      browser: `${browser?.name ?? ""} ${browser?.version ?? ""}`,
-      system: `${os?.name ?? ""} ${os?.version ?? ""}`,
+      browser: `${browser?.name ?? ""}`,
+      system: `${os?.name ?? ""}`,
       device: `${device?.vendor ?? ""} ${device?.model ?? ""}`,
       user: { id: user?.id },
     };
@@ -118,15 +117,14 @@ export default class UserService {
       }).save();
     }
 
-    const accessToken = await this.generateAccessToken(refresh.token);
-
-    return {
-      refreshToken: refresh.token,
-      accessToken,
-    };
+    return refresh.token;
   }
 
-  async generateAccessToken(refreshToken: string): Promise<string> {
+  async generateAccessToken(
+    refreshToken: string,
+    res?: Response
+  ): Promise<string> {
+    const isProd = this.configService.get("NODE_ENV") === "production";
     const expirationTime = 1 * 60 * 60; // hour * minute * second
     try {
       const refresh = await RefreshToken.findOneByOrFail({
@@ -146,6 +144,14 @@ export default class UserService {
           expiresIn: expirationTime,
         }
       );
+
+      res?.cookie("authorization", accessToken, {
+        maxAge: expirationTime * 1000, // expirationTime * milisecond
+        path: "/graphql",
+        httpOnly: true,
+        secure: isProd,
+        sameSite: isProd ? "none" : "lax",
+      });
 
       return accessToken;
     } catch (_) {

@@ -1,5 +1,5 @@
 import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 import PaginationArgs from "src/utilities/dto/pagination.args";
 import { IsPublic } from "src/utilities/service/authGuard.service";
 import LoginInput from "./dto/login.input";
@@ -32,15 +32,24 @@ export default class UserResolver {
   @Mutation(() => JwtTokens)
   async login(
     @Args("input") loginInput: LoginInput,
-    @Context("req") req: Request
+    @Context("req") req: Request,
+    @Context("res") res: Response
   ): Promise<JwtTokens> {
     const user = await this.usersService.userLogin(loginInput);
-    const tokens = await this.usersService.generateRefreshToken({
+    const refreshToken = await this.usersService.generateRefreshToken({
       req,
       user,
     });
 
-    return tokens;
+    const accessToken = await this.usersService.generateAccessToken(
+      refreshToken,
+      res
+    );
+
+    return {
+      refreshToken,
+      accessToken,
+    };
   }
 
   @IsPublic()
@@ -48,24 +57,35 @@ export default class UserResolver {
   async register(
     @Args("input")
     registerInput: RegisterInput,
-    @Context("req") req: Request
+    @Context("req") req: Request,
+    @Context("res") res: Response
   ): Promise<JwtTokens> {
     const user = await this.usersService.userRegister(registerInput);
-    const tokens = await this.usersService.generateRefreshToken({
+    const refreshToken = await this.usersService.generateRefreshToken({
       req,
       user,
     });
 
-    return tokens;
+    const accessToken = await this.usersService.generateAccessToken(
+      refreshToken,
+      res
+    );
+
+    return {
+      refreshToken,
+      accessToken,
+    };
   }
 
   @IsPublic()
   @Mutation(() => String, { nullable: true })
   async refreshAccessToken(
-    @Args("refreshToken") refreshToken: string
+    @Args("refreshToken") refreshToken: string,
+    @Context("res") res: Response
   ): Promise<string> {
     const accessToken = await this.usersService.generateAccessToken(
-      refreshToken
+      refreshToken,
+      res
     );
 
     return accessToken;

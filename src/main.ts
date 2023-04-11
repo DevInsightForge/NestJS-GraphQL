@@ -1,6 +1,7 @@
 import { Logger } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
+import * as cookieParser from "cookie-parser";
 import AppModule from "./app.module";
 
 const logger = new Logger("Server");
@@ -10,6 +11,8 @@ const main = async (): Promise<string> => {
   const configService = app.get(ConfigService);
   const port = parseInt(configService.get("PORT", "4000"), 10);
 
+  // plugins configurations
+  app.use(cookieParser());
   app.enableCors({
     origin: true,
   });
