@@ -57,12 +57,15 @@ export default class AuthGuardService implements CanActivate {
   }
 
   private extractTokenFromRequest(request: Request): string | undefined {
-    const [type = "", headerToken = undefined] =
-      request?.headers?.authorization?.split(" ") ?? [];
+    const authorizationCookie = request.headers?.cookie
+      ?.split(`; `)
+      ?.find((item: string) => item?.startsWith("Bearer="));
 
-    const cookieToken =
-      (request?.cookies as Cookies)?.authorization ?? undefined;
+    const [type = "", accessToken = undefined] =
+      request?.headers?.authorization?.split(" ") ??
+      authorizationCookie?.split("=") ??
+      [];
 
-    return type === "Bearer" ? headerToken : cookieToken;
+    return type === "Bearer" ? accessToken : undefined;
   }
 }

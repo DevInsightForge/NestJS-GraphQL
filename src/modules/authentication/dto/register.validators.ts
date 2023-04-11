@@ -4,7 +4,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from "class-validator";
-import User from "../models/user.model";
+import User from "src/modules/user/models/user.model";
 
 @ValidatorConstraint({ async: true, name: "exists" })
 class UserExistsContrain implements ValidatorConstraintInterface {

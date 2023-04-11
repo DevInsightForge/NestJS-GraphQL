@@ -2,13 +2,13 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import User from "./models/user.model";
-import UserResolver from "./user.resolver";
-import UserService from "./user.service";
+import AuthenticationResolver from "./authentication.resolver";
+import AuthenticationService from "./authentication.service";
+import RefreshToken from "./models/refreshToken.model";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([RefreshToken]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -18,6 +18,6 @@ import UserService from "./user.service";
       global: true,
     }),
   ],
-  providers: [UserService, UserResolver],
+  providers: [AuthenticationService, AuthenticationResolver],
 })
-export default class UserModule {}
+export default class AuthenticationModule {}

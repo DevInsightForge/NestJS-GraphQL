@@ -16,9 +16,9 @@ import {
   PrimaryGeneratedColumn,
   Relation,
 } from "typeorm";
+import RefreshToken from "../../authentication/models/refreshToken.model";
 import Chat from "../../chat/models/chat.model";
 import Message from "../../message/models/message.model";
-import RefreshToken from "./refreshToken.model";
 
 export enum UserRole {
   superadmin = "superadmin",

@@ -1,5 +1,5 @@
 import { Field, InputType } from "@nestjs/graphql";
-import UserBasicInputs from "src/modules/user/types/userBasic.input";
+import UserBasicInputs from "../../user/dto/userBasic.input";
 
 @InputType()
 export default class NewChatInput {

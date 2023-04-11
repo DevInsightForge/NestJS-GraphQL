@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
   Relation,
 } from "typeorm";
-import User from "./user.model";
+import User from "../../user/models/user.model";
 
 @ObjectType()
 @Entity({ name: "refresh_token" })

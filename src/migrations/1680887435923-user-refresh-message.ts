@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class userRefreshMessage1680887435923 implements MigrationInterface {
-    name = 'userRefreshMessage1680887435923'
+  name = "userRefreshMessage1680887435923";
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async up(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             CREATE TABLE "message" (
                 "id" SERIAL NOT NULL,
                 "content" character varying NOT NULL,
@@ -12,7 +12,7 @@ export class userRefreshMessage1680887435923 implements MigrationInterface {
                 CONSTRAINT "PK_ba01f0a3e0123651915008bc578" PRIMARY KEY ("id")
             )
         `);
-        await queryRunner.query(`
+    await queryRunner.query(`
             CREATE TABLE "user" (
                 "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "email" character varying NOT NULL,
@@ -25,7 +25,7 @@ export class userRefreshMessage1680887435923 implements MigrationInterface {
                 CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id")
             )
         `);
-        await queryRunner.query(`
+    await queryRunner.query(`
             CREATE TABLE "refresh_token" (
                 "token" uuid NOT NULL DEFAULT uuid_generate_v4(),
                 "browser" character varying NOT NULL,
@@ -36,25 +36,24 @@ export class userRefreshMessage1680887435923 implements MigrationInterface {
                 CONSTRAINT "PK_c31d0a2f38e6e99110df62ab0af" PRIMARY KEY ("token")
             )
         `);
-        await queryRunner.query(`
+    await queryRunner.query(`
             ALTER TABLE "refresh_token"
             ADD CONSTRAINT "FK_8e913e288156c133999341156ad" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
         `);
-    }
+  }
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`
             ALTER TABLE "refresh_token" DROP CONSTRAINT "FK_8e913e288156c133999341156ad"
         `);
-        await queryRunner.query(`
+    await queryRunner.query(`
             DROP TABLE "refresh_token"
         `);
-        await queryRunner.query(`
+    await queryRunner.query(`
             DROP TABLE "user"
         `);
-        await queryRunner.query(`
+    await queryRunner.query(`
             DROP TABLE "message"
         `);
-    }
-
+  }
 }
