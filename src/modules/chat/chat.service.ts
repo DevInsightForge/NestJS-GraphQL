@@ -25,9 +25,12 @@ export default class ChatService {
   }
 
   async getChat(chatId: string): Promise<Chat> {
-    const chat = await Chat.findOneByOrFail({
-      id: chatId,
+    const chat = await Chat.findOneOrFail({
+      where: {
+        id: chatId,
+      },
     });
+
     return chat;
   }
 

@@ -20,27 +20,35 @@ export default class MessageResolver {
   ) {}
 
   @Query(() => [Message])
-  messages(@Args() paginationArgs: PaginationArgs): Promise<Message[]> {
-    return this.messagesService.findAll(paginationArgs);
+  async chatMessages(
+    @Args("chatId") chatId: string,
+    @Args() paginationArgs: PaginationArgs
+  ): Promise<Message[]> {
+    return this.messagesService.findAll(paginationArgs, chatId);
   }
 
   @Mutation(() => Message)
-  async addMessage(
+  async sendMessage(
     @Args("newMessageData") newMessageData: NewMessageInput,
     @Context("userId") userId: string
   ): Promise<Message> {
     const message = await this.messagesService.create(newMessageData, userId);
-    await this.pubSubService.publish("messageAdded", { messageAdded: message });
+    await this.pubSubService.publish(newMessageData?.chatId, {
+      newChatMessage: message,
+    });
     return message;
   }
 
   @Mutation(() => Boolean)
-  async removeMessage(@Args("id") id: string) {
-    return this.messagesService.remove(id);
+  async deleteMessage(
+    @Args("messageId") messageId: string,
+    @Context("userId") userId: string
+  ) {
+    return this.messagesService.delete(messageId, userId);
   }
 
   @Subscription(() => Message)
-  messageAdded() {
-    return this.pubSubService.asyncIterator("messageAdded");
+  newChatMessage(@Args("chatId") chatId: string) {
+    return this.pubSubService.asyncIterator(chatId);
   }
 }

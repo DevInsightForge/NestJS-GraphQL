@@ -5,26 +5,54 @@ import Message from "./models/message.model";
 
 @Injectable()
 export default class MessageService {
-  async create(data: NewMessageInput, userId: string): Promise<Message> {
-    return Message.create({ ...data, user: { id: userId } }).save();
-  }
-
-  async findOneById(id: string): Promise<Message> {
-    return Message.findOneByOrFail({ id });
-  }
-
-  async findAll({ take, skip }: PaginationArgs): Promise<Message[]> {
+  async findAll(
+    { take, skip }: PaginationArgs,
+    chatId: string
+  ): Promise<Message[]> {
     const result = await Message.find({
       take,
       skip,
       order: { id: "DESC" },
+      where: {
+        chat: {
+          id: chatId,
+        },
+      },
     });
 
     return result.reverse();
   }
 
-  async remove(id: string): Promise<boolean> {
-    await Message.delete({ id });
-    return true;
+  async create(
+    { content, chatId }: NewMessageInput,
+    userId: string
+  ): Promise<Message> {
+    const { id } = await Message.create({
+      content,
+      chat: {
+        id: chatId,
+      },
+      user: { id: userId },
+    }).save();
+
+    return Message.findOneBy({
+      id,
+    });
+  }
+
+  async delete(messageId: string, userId: string): Promise<boolean> {
+    try {
+      const message = await Message.findOneByOrFail({
+        id: messageId,
+        user: {
+          id: userId,
+        },
+      });
+
+      await message.remove();
+      return true;
+    } catch (_) {
+      throw new Error(`Could not find or delete message with id ${messageId}`);
+    }
   }
 }

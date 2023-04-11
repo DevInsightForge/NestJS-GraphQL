@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { Field, HideField, ID, ObjectType } from "@nestjs/graphql";
 import Chat from "src/modules/chat/models/chat.model";
 import UserBasic from "src/modules/user/types/userBasic.type";
 import {
@@ -36,8 +36,10 @@ export default class Message extends BaseEntity {
   })
   user: Relation<User>;
 
-  // @Field(() => [Message])
+  @HideField()
   @JoinTable()
-  @ManyToOne(() => Chat, (chat) => chat.messages)
+  @ManyToOne(() => Chat, (chat) => chat.messages, {
+    onDelete: "CASCADE",
+  })
   chat: Relation<Chat>;
 }

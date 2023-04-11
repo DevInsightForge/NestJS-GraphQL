@@ -4,4 +4,7 @@ import { Field, InputType } from "@nestjs/graphql";
 export default class NewMessageInput {
   @Field()
   content: string;
+
+  @Field()
+  chatId: string;
 }

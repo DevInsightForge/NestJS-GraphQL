@@ -37,7 +37,6 @@ export default class Chat extends BaseEntity {
   participants: Relation<User[]>;
 
   @Field(() => [Message])
-  @JoinTable()
   @OneToMany(() => Message, (message) => message.chat, {
     eager: true,
   })

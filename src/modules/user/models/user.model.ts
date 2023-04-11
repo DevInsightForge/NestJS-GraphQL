@@ -63,7 +63,6 @@ export default class User extends BaseEntity {
   @Column({ default: UserRole.user })
   role: UserRole;
 
-  // @Field(() => [RefreshToken], { nullable: true })
   @HideField()
   @OneToMany(() => RefreshToken, (token) => token.user)
   sessions: Relation<RefreshToken[]>;
