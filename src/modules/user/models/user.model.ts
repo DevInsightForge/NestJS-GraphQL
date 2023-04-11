@@ -11,14 +11,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToMany,
-  OneToMany,
   PrimaryGeneratedColumn,
-  Relation,
 } from "typeorm";
-import RefreshToken from "../../authentication/models/refreshToken.model";
-import Chat from "../../chat/models/chat.model";
-import Message from "../../message/models/message.model";
 
 export enum UserRole {
   superadmin = "superadmin",
@@ -62,18 +56,6 @@ export default class User extends BaseEntity {
   @Field(() => UserRole, { nullable: true })
   @Column({ default: UserRole.user })
   role: UserRole;
-
-  @HideField()
-  @OneToMany(() => RefreshToken, (token) => token.user)
-  sessions: Relation<RefreshToken[]>;
-
-  @HideField()
-  @OneToMany(() => Message, (message) => message.user)
-  messages: Relation<Message[]>;
-
-  @HideField()
-  @ManyToMany(() => Chat, (chat) => chat.participants)
-  chats: Relation<Chat[]>;
 
   @Field(() => Boolean, { nullable: true })
   get isSuperadmin(): boolean {

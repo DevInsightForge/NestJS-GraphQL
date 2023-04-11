@@ -7,8 +7,4 @@ declare global {
     userId?: string | undefined;
     userRole?: string | undefined;
   }
-
-  interface Cookies {
-    [key: string]: string;
-  }
 }

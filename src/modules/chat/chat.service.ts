@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import PaginationArgs from "src/utilities/dto/pagination.args";
+import PaginationArgs from "../../utilities/dto/pagination.args";
 import NewChatInput from "./dto/new-chat.input";
 import Chat from "./models/chat.model";
 import ChatBasic from "./types/chatBasic.type";
@@ -38,7 +38,7 @@ export default class ChatService {
     { participants = [], ...chatInputs }: NewChatInput,
     userId: string
   ): Promise<ChatBasic> {
-    if (!participants?.find((user) => user.id === userId)) {
+    if (!participants?.find((user) => user?.id === userId)) {
       participants.unshift({
         id: userId,
       });

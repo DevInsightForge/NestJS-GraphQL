@@ -23,13 +23,6 @@ export default class AuthenticationService {
     private jwtService: JwtService
   ) {}
 
-  async getSessions(userId = ""): Promise<RefreshToken[]> {
-    const sessions = await RefreshToken.findBy({
-      user: { id: userId },
-    });
-    return sessions;
-  }
-
   async userLogin({ email, password }: LoginInput): Promise<User> {
     try {
       const user = await User.findOneByOrFail({
@@ -62,6 +55,13 @@ export default class AuthenticationService {
     } catch ({ message }) {
       throw new GraphQLError(message as string);
     }
+  }
+
+  async getSessions(userId = ""): Promise<RefreshToken[]> {
+    const sessions = await RefreshToken.findBy({
+      user: { id: userId },
+    });
+    return sessions;
   }
 
   async generateRefreshToken({

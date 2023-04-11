@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import PubSubModule from "src/utilities/modules/pubsub.module";
+import PubSubModule from "../../utilities/modules/pubsub.module";
 import MessageResolver from "./message.resolver";
 import MessageService from "./message.service";
 import Message from "./models/message.model";

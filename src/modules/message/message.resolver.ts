@@ -7,7 +7,7 @@ import {
   Subscription,
 } from "@nestjs/graphql";
 import { PubSub } from "graphql-subscriptions";
-import PaginationArgs from "src/utilities/dto/pagination.args";
+import PaginationArgs from "../../utilities/dto/pagination.args";
 import NewMessageInput from "./dto/new-message.input";
 import MessageService from "./message.service";
 import Message from "./models/message.model";

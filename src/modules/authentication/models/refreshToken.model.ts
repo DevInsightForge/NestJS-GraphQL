@@ -22,7 +22,7 @@ export default class RefreshToken extends BaseEntity {
 
   @JoinTable()
   @HideField()
-  @ManyToOne(() => User, (user) => user.sessions, {
+  @ManyToOne(() => User, {
     cascade: true,
     eager: true,
   })

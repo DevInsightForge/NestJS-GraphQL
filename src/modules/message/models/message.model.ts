@@ -30,7 +30,7 @@ export default class Message extends BaseEntity {
 
   @Field(() => UserBasic)
   @JoinTable()
-  @ManyToOne(() => User, (user) => user.messages, {
+  @ManyToOne(() => User, {
     cascade: true,
     eager: true,
   })
