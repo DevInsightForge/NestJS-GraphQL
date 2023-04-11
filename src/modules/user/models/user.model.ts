@@ -6,7 +6,6 @@ import {
   registerEnumType,
 } from "@nestjs/graphql";
 import { Exclude } from "class-transformer";
-import Chat from "src/modules/chat/models/chat.model";
 import {
   BaseEntity,
   Column,
@@ -17,6 +16,7 @@ import {
   PrimaryGeneratedColumn,
   Relation,
 } from "typeorm";
+import Chat from "../../chat/models/chat.model";
 import Message from "../../message/models/message.model";
 import RefreshToken from "./refreshToken.model";
 

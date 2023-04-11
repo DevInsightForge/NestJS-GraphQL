@@ -3,6 +3,8 @@ import { config as loadEnvConfigs } from "dotenv";
 import { DataSource } from "typeorm";
 import { userRefreshMessage1680887435923 } from "../migrations/1680887435923-user-refresh-message";
 import { userMessage1680890836536 } from "../migrations/1680890836536-user-message";
+import { chatMessageUser1681195936471 } from "../migrations/1681195936471-chat-message-user";
+import Chat from "../modules/chat/models/chat.model";
 import Message from "../modules/message/models/message.model";
 import RefreshToken from "../modules/user/models/refreshToken.model";
 import User from "../modules/user/models/user.model";
@@ -19,8 +21,12 @@ const AppDataSource = new DataSource({
   synchronize: false,
   dropSchema: false,
   logging: false,
-  entities: [User, RefreshToken, Message],
-  migrations: [userRefreshMessage1680887435923, userMessage1680890836536],
+  entities: [User, RefreshToken, Message, Chat],
+  migrations: [
+    userRefreshMessage1680887435923,
+    userMessage1680890836536,
+    chatMessageUser1681195936471,
+  ],
 });
 
 export default AppDataSource;

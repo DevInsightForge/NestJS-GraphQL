@@ -1,6 +1,4 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
-import Message from "src/modules/message/models/message.model";
-import UserBasic from "src/modules/user/types/userBasic.type";
 import {
   BaseEntity,
   Column,
@@ -12,7 +10,9 @@ import {
   PrimaryGeneratedColumn,
   Relation,
 } from "typeorm";
+import Message from "../../message/models/message.model";
 import User from "../../user/models/user.model";
+import UserBasic from "../../user/types/userBasic.type";
 
 @ObjectType()
 @Entity()
