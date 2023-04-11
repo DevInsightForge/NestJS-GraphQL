@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
-import PaginationArgs from "../../utilities/dto/pagination.args";
-import NewChatInput from "./dto/new-chat.input";
-import Chat from "./models/chat.model";
-import ChatBasic from "./types/chatBasic.type";
+import { PaginationArgs } from "../../utilities/dto/pagination.args";
+import { NewChatInput } from "./dto/new-chat.input";
+import { Chat } from "./models/chat.model";
+import { ChatBasic } from "./types/chatBasic.type";
 
 @Injectable()
-export default class ChatService {
+export class ChatService {
   async findAll(
     { take, skip }: PaginationArgs,
     userId: string

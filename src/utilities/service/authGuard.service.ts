@@ -10,13 +10,13 @@ import { GqlExecutionContext } from "@nestjs/graphql";
 import { JwtService } from "@nestjs/jwt";
 import type { Request } from "express";
 import { GraphQLError } from "graphql";
-import User from "../../modules/user/models/user.model";
+import { User } from "../../modules/user/models/user.model";
 
 const IS_PUBLIC_KEY = "isPublic";
 export const IsPublic = () => SetMetadata(IS_PUBLIC_KEY, true);
 
 @Injectable()
-export default class AuthGuardService implements CanActivate {
+export class AuthGuardService implements CanActivate {
   constructor(
     private configService: ConfigService,
     private jwtService: JwtService,

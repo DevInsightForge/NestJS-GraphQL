@@ -25,6 +25,7 @@
     "@typescript-eslint/no-explicit-any": "off",
     "class-methods-use-this": "off",
     "import/no-cycle": "off",
+    "import/prefer-default-export": "off",
     "no-underscore-dangle": ["error", { "allow": ["__a_t", "__r_t"] }]
   }
 }

@@ -15,4 +15,4 @@ import { PubSub } from "graphql-subscriptions";
   ],
   exports: [PubSub],
 })
-export default class PubSubModule {}
+export class PubSubModule {}

@@ -1,9 +1,9 @@
 import { Field, InputType } from "@nestjs/graphql";
 import { IsEmail, Length, Matches } from "class-validator";
-import AlreadyExist from "./register.validators";
+import { AlreadyExist } from "./register.validators";
 
 @InputType()
-class RegisterInput {
+export class RegisterInput {
   @Field()
   @IsEmail()
   @AlreadyExist({ message: "User already exists with this email" })
@@ -18,5 +18,3 @@ class RegisterInput {
   })
   password: string;
 }
-
-export default RegisterInput;

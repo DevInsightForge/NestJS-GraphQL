@@ -1,8 +1,8 @@
 import { Field, InputType } from "@nestjs/graphql";
-import UserBasicInputs from "../../user/dto/userBasic.input";
+import { UserBasicInputs } from "../../user/dto/userBasic.input";
 
 @InputType()
-export default class NewChatInput {
+export class NewChatInput {
   @Field()
   title: string;
 

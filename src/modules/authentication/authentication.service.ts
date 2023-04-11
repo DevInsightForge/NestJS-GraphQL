@@ -5,10 +5,10 @@ import { compare, hash } from "bcryptjs";
 import type { Request, Response } from "express";
 import { GraphQLError } from "graphql";
 import * as UAParser from "ua-parser-js";
-import User from "../user/models/user.model";
-import LoginInput from "./dto/login.input";
-import RegisterInput from "./dto/register.input";
-import RefreshToken from "./models/refreshToken.model";
+import { User } from "../user/models/user.model";
+import { LoginInput } from "./dto/login.input";
+import { RegisterInput } from "./dto/register.input";
+import { RefreshToken } from "./models/refreshToken.model";
 
 interface RefreshTokensParams {
   req?: Request;
@@ -17,7 +17,7 @@ interface RefreshTokensParams {
 }
 
 @Injectable()
-export default class AuthenticationService {
+export class AuthenticationService {
   constructor(
     private configService: ConfigService,
     private jwtService: JwtService

@@ -10,13 +10,13 @@ import {
   PrimaryGeneratedColumn,
   Relation,
 } from "typeorm";
-import Message from "../../message/models/message.model";
-import User from "../../user/models/user.model";
-import UserBasic from "../../user/types/userBasic.type";
+import { Message } from "../../message/models/message.model";
+import { User } from "../../user/models/user.model";
+import { UserBasic } from "../../user/types/userBasic.type";
 
 @ObjectType()
 @Entity()
-export default class Chat extends BaseEntity {
+export class Chat extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;

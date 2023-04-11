@@ -10,11 +10,11 @@ import {
   PrimaryGeneratedColumn,
   Relation,
 } from "typeorm";
-import User from "../../user/models/user.model";
+import { User } from "../../user/models/user.model";
 
 @ObjectType()
 @Entity({ name: "refresh_token" })
-export default class RefreshToken extends BaseEntity {
+export class RefreshToken extends BaseEntity {
   @HideField()
   @Exclude({ toPlainOnly: true })
   @PrimaryGeneratedColumn("uuid")

@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
-export default class JwtTokens {
+export class JwtTokens {
   @Field()
   refreshToken?: string;
 

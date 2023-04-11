@@ -4,7 +4,7 @@ import { Plugin } from "@nestjs/apollo";
 import { Logger } from "@nestjs/common";
 
 @Plugin()
-export default class LoggingPlugin implements ApolloServerPlugin {
+export class LoggingPlugin implements ApolloServerPlugin {
   private readonly logger = new Logger("GraphQLLogger");
 
   async requestDidStart(): Promise<GraphQLRequestListener<any>> {

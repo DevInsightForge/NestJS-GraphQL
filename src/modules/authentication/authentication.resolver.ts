@@ -1,14 +1,14 @@
 import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
 import type { Request, Response } from "express";
 import { IsPublic } from "../../utilities/service/authGuard.service";
-import AuthenticationService from "./authentication.service";
-import LoginInput from "./dto/login.input";
-import RegisterInput from "./dto/register.input";
-import RefreshToken from "./models/refreshToken.model";
-import JwtTokens from "./types/jwtToken.type";
+import { AuthenticationService } from "./authentication.service";
+import { LoginInput } from "./dto/login.input";
+import { RegisterInput } from "./dto/register.input";
+import { RefreshToken } from "./models/refreshToken.model";
+import { JwtTokens } from "./types/jwtToken.type";
 
 @Resolver()
-export default class AuthenticationResolver {
+export class AuthenticationResolver {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
   @Query(() => [RefreshToken])

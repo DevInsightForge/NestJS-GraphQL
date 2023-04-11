@@ -10,7 +10,7 @@ interface ConnectionContext extends ContextType {
   };
 }
 
-const apolloConfig: ApolloDriverConfig = {
+export const apolloConfig: ApolloDriverConfig = {
   driver: ApolloDriver,
   autoSchemaFile: true,
   playground: false,
@@ -40,5 +40,3 @@ const apolloConfig: ApolloDriverConfig = {
     };
   },
 };
-
-export default apolloConfig;

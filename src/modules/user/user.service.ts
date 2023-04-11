@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
-import PaginationArgs from "../../utilities/dto/pagination.args";
-import User from "./models/user.model";
+import { PaginationArgs } from "../../utilities/dto/pagination.args";
+import { User } from "./models/user.model";
 
 @Injectable()
-export default class UserService {
+export class UserService {
   constructor(
     private configService: ConfigService,
     private jwtService: JwtService

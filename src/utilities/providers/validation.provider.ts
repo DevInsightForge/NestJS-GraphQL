@@ -2,7 +2,7 @@ import { ValidationPipe } from "@nestjs/common";
 import { APP_PIPE } from "@nestjs/core";
 import { GraphQLError } from "graphql";
 
-const ValidationProvider = {
+export const ValidationProvider = {
   provide: APP_PIPE,
   useFactory: () =>
     new ValidationPipe({
@@ -19,5 +19,3 @@ const ValidationProvider = {
       },
     }),
 };
-
-export default ValidationProvider;

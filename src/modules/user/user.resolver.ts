@@ -1,10 +1,10 @@
 import { Args, Context, Query, Resolver } from "@nestjs/graphql";
-import PaginationArgs from "../../utilities/dto/pagination.args";
-import User from "./models/user.model";
-import UserService from "./user.service";
+import { PaginationArgs } from "../../utilities/dto/pagination.args";
+import { User } from "./models/user.model";
+import { UserService } from "./user.service";
 
 @Resolver()
-export default class UserResolver {
+export class UserResolver {
   constructor(private readonly usersService: UserService) {}
 
   @Query(() => User)

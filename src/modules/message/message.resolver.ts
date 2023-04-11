@@ -7,13 +7,13 @@ import {
   Subscription,
 } from "@nestjs/graphql";
 import { PubSub } from "graphql-subscriptions";
-import PaginationArgs from "../../utilities/dto/pagination.args";
-import NewMessageInput from "./dto/new-message.input";
-import MessageService from "./message.service";
-import Message from "./models/message.model";
+import { PaginationArgs } from "../../utilities/dto/pagination.args";
+import { NewMessageInput } from "./dto/new-message.input";
+import { MessageService } from "./message.service";
+import { Message } from "./models/message.model";
 
 @Resolver()
-export default class MessageResolver {
+export class MessageResolver {
   constructor(
     private readonly messagesService: MessageService,
     private readonly pubSubService: PubSub

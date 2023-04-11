@@ -1,13 +1,13 @@
 import { Args, Context, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { PubSub } from "graphql-subscriptions";
-import PaginationArgs from "../../utilities/dto/pagination.args";
-import ChatService from "./chat.service";
-import NewChatInput from "./dto/new-chat.input";
-import Chat from "./models/chat.model";
-import ChatBasic from "./types/chatBasic.type";
+import { PaginationArgs } from "../../utilities/dto/pagination.args";
+import { ChatService } from "./chat.service";
+import { NewChatInput } from "./dto/new-chat.input";
+import { Chat } from "./models/chat.model";
+import { ChatBasic } from "./types/chatBasic.type";
 
 @Resolver()
-export default class ChatResolver {
+export class ChatResolver {
   constructor(
     private readonly pubSubService: PubSub,
     private readonly chatService: ChatService

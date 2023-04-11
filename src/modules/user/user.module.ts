@@ -2,9 +2,9 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import User from "./models/user.model";
-import UserResolver from "./user.resolver";
-import UserService from "./user.service";
+import { User } from "./models/user.model";
+import { UserResolver } from "./user.resolver";
+import { UserService } from "./user.service";
 
 @Module({
   imports: [
@@ -20,4 +20,4 @@ import UserService from "./user.service";
   ],
   providers: [UserService, UserResolver],
 })
-export default class UserModule {}
+export class UserModule {}

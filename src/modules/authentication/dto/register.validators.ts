@@ -4,7 +4,7 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from "class-validator";
-import User from "../../user/models/user.model";
+import { User } from "../../user/models/user.model";
 
 @ValidatorConstraint({ async: true, name: "exists" })
 class UserExistsContrain implements ValidatorConstraintInterface {
@@ -15,7 +15,7 @@ class UserExistsContrain implements ValidatorConstraintInterface {
   }
 }
 
-export default function AlreadyExist(validationOptions?: ValidationOptions) {
+export function AlreadyExist(validationOptions?: ValidationOptions) {
   return (object: object, propertyName: string) => {
     registerDecorator({
       propertyName,
