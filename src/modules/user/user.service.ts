@@ -4,10 +4,10 @@ import { JwtService } from "@nestjs/jwt";
 import { compare, hash } from "bcryptjs";
 import type { Request, Response } from "express";
 import { GraphQLError } from "graphql";
+import PaginationArgs from "src/utilities/dto/pagination.args";
 import * as UAParser from "ua-parser-js";
 import LoginInput from "./dto/login.input";
 import RegisterInput from "./dto/register.input";
-import UserArgs from "./dto/user.args";
 import RefreshToken from "./models/refreshToken.model";
 import User from "./models/user.model";
 import JwtTokens from "./types/jwtToken.type";
@@ -32,7 +32,7 @@ export default class UserService {
     return user;
   }
 
-  async allUsers({ take, skip }: UserArgs): Promise<User[]> {
+  async allUsers({ take, skip }: PaginationArgs): Promise<User[]> {
     const result = await User.find({
       take,
       skip,

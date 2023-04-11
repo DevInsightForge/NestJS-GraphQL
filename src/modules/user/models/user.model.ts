@@ -6,11 +6,13 @@ import {
   registerEnumType,
 } from "@nestjs/graphql";
 import { Exclude } from "class-transformer";
+import Chat from "src/modules/chat/models/chat.model";
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   Relation,
@@ -69,6 +71,10 @@ export default class User extends BaseEntity {
   @HideField()
   @OneToMany(() => Message, (message) => message.user)
   messages: Relation<Message[]>;
+
+  @HideField()
+  @ManyToMany(() => Chat, (chat) => chat.participants)
+  chats: Relation<Chat[]>;
 
   @Field(() => Boolean, { nullable: true })
   get isSuperadmin(): boolean {

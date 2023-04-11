@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import MessageArgs from "./dto/message.args";
+import PaginationArgs from "src/utilities/dto/pagination.args";
 import NewMessageInput from "./dto/new-message.input";
 import Message from "./models/message.model";
 
@@ -13,7 +13,7 @@ export default class MessageService {
     return Message.findOneByOrFail({ id });
   }
 
-  async findAll({ take, skip }: MessageArgs): Promise<Message[]> {
+  async findAll({ take, skip }: PaginationArgs): Promise<Message[]> {
     const result = await Message.find({
       take,
       skip,
