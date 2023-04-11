@@ -89,6 +89,7 @@ export default class UserService {
   }: RefreshTokensParams): Promise<JwtTokens> {
     const { browser, os, device } = UAParser(req.headers["user-agent"]);
 
+    let refresh: RefreshToken;
     const refrshExpires = new Date();
     refrshExpires.setDate(refrshExpires.getDate() + 1); // lets set to 1 day for now
 
@@ -99,14 +100,13 @@ export default class UserService {
       user: { id: user?.id },
     };
 
-    let refresh: RefreshToken;
     try {
       refresh = await RefreshToken.findOneByOrFail({
         ...refreshPayload,
       });
 
-      if (!refresh.isActive) {
-        throw Error();
+      if (!refresh?.isActive) {
+        throw new Error();
       }
 
       refresh.validUntil = refrshExpires;
@@ -129,12 +129,12 @@ export default class UserService {
   async generateAccessToken(refreshToken: string): Promise<string> {
     const expirationTime = 1 * 60 * 60; // hour * minute * second
     try {
-      const refresh = await RefreshToken.findOneBy({
+      const refresh = await RefreshToken.findOneByOrFail({
         token: refreshToken,
       });
 
       if (!refresh?.isActive) {
-        throw Error();
+        throw new Error();
       }
 
       const accessToken = await this.jwtService.signAsync(
@@ -149,7 +149,7 @@ export default class UserService {
 
       return accessToken;
     } catch (_) {
-      throw new GraphQLError("Token is invalid or has been expired");
+      throw new GraphQLError("Refresh token is invalid or has been expired");
     }
   }
 }
