@@ -13,14 +13,14 @@
     "lint": "eslint src/**/*.ts --fix"
   },
   "dependencies": {
-    "@apollo/server": "4.5.0",
-    "@nestjs/apollo": "^11.0.4",
-    "@nestjs/common": "9.3.12",
+    "@apollo/server": "4.6.0",
+    "@nestjs/apollo": "^11.0.5",
+    "@nestjs/common": "9.4.0",
     "@nestjs/config": "^2.3.1",
-    "@nestjs/core": "9.3.12",
-    "@nestjs/graphql": "11.0.4",
+    "@nestjs/core": "9.4.0",
+    "@nestjs/graphql": "11.0.5",
     "@nestjs/jwt": "^10.0.3",
-    "@nestjs/platform-express": "9.3.12",
+    "@nestjs/platform-express": "9.4.0",
     "@nestjs/typeorm": "^9.0.1",
     "bcryptjs": "^2.4.3",
     "class-transformer": "0.5.1",
@@ -31,7 +31,7 @@
     "pg": "^8.10.0",
     "reflect-metadata": "0.1.13",
     "rxjs": "7.8.0",
-    "typeorm": "0.3.12",
+    "typeorm": "0.3.14",
     "ua-parser-js": "^1.0.35"
   },
   "devDependencies": {
@@ -41,10 +41,10 @@
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "18.15.11",
     "@types/ua-parser-js": "^0.7.36",
-    "@typescript-eslint/eslint-plugin": "5.57.0",
-    "@typescript-eslint/parser": "5.57.0",
+    "@typescript-eslint/eslint-plugin": "5.58.0",
+    "@typescript-eslint/parser": "5.58.0",
     "dotenv": "^16.0.3",
-    "eslint": "8.37.0",
+    "eslint": "8.38.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.8.0",
@@ -54,7 +54,6 @@
     "ts-loader": "9.4.2",
     "ts-node": "10.9.1",
     "tsconfig-paths": "4.2.0",
-    "typescript": "5.0.3"
+    "typescript": "5.0.4"
   }
 }
-
