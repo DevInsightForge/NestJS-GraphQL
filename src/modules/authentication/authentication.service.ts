@@ -4,6 +4,7 @@ import { JwtService } from "@nestjs/jwt";
 import { compare, hash } from "bcryptjs";
 import type { Request, Response } from "express";
 import { GraphQLError } from "graphql";
+import { MoreThan } from "typeorm";
 import * as UAParser from "ua-parser-js";
 import { User } from "../user/models/user.model";
 import { LoginInput } from "./dto/login.input";
@@ -60,7 +61,9 @@ export class AuthenticationService {
   async getSessions(userId = ""): Promise<RefreshToken[]> {
     const sessions = await RefreshToken.findBy({
       user: { id: userId },
+      validUntil: MoreThan(new Date()),
     });
+
     return sessions;
   }
 
