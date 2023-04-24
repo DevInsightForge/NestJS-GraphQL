@@ -87,11 +87,8 @@ export class AuthenticationService {
     try {
       refresh = await RefreshToken.findOneByOrFail({
         ...refreshPayload,
+        validUntil: MoreThan(new Date()),
       });
-
-      if (!refresh?.isActive) {
-        throw new Error();
-      }
 
       refresh.validUntil = refrshExpires;
       await refresh.save();
@@ -114,11 +111,8 @@ export class AuthenticationService {
     try {
       const refresh = await RefreshToken.findOneByOrFail({
         token: refreshToken,
+        validUntil: MoreThan(new Date()),
       });
-
-      if (!refresh?.isActive) {
-        throw new Error();
-      }
 
       const accessToken = await this.jwtService.signAsync(
         {
