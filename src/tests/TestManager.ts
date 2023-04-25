@@ -1,5 +1,4 @@
 import { HttpServer, INestApplication } from "@nestjs/common";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Test } from "@nestjs/testing";
 import { AppModule } from "../app.module";
 
