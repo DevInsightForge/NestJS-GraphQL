@@ -23,6 +23,25 @@ export class AuthGuardService implements CanActivate {
     private reflector: Reflector
   ) {}
 
+  private extractTokenOrThrow(request: Request): string | undefined {
+    const authorizationCookie = request?.headers?.cookie
+      ?.split(`; `)
+      ?.find((item: string) => item?.startsWith("Bearer="));
+
+    const [type = "", accessToken = undefined] =
+      request?.headers?.authorization?.split(" ") ??
+      authorizationCookie?.split("=") ??
+      [];
+
+    if (type !== "Bearer" && !accessToken) {
+      throw new GraphQLError("You are not authorized for this operation", {
+        extensions: { code: "UNAUTHORIZED" },
+      });
+    }
+
+    return accessToken;
+  }
+
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
@@ -34,14 +53,8 @@ export class AuthGuardService implements CanActivate {
 
     const gqlCtx = GqlExecutionContext.create(context);
     const ctx: ContextType = gqlCtx.getContext();
+    const token = this.extractTokenOrThrow(ctx?.req);
 
-    const token = this.extractTokenFromRequest(ctx.req);
-
-    if (!token) {
-      throw new GraphQLError("You are not authorized for this operation", {
-        extensions: { code: "UNAUTHORIZED" },
-      });
-    }
     try {
       const payload: Partial<User> = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get<string>("SECRET", "DEFAULTJWTSECRET"),
@@ -54,18 +67,5 @@ export class AuthGuardService implements CanActivate {
       });
     }
     return true;
-  }
-
-  private extractTokenFromRequest(request: Request): string | undefined {
-    const authorizationCookie = request.headers?.cookie
-      ?.split(`; `)
-      ?.find((item: string) => item?.startsWith("Bearer="));
-
-    const [type = "", accessToken = undefined] =
-      request?.headers?.authorization?.split(" ") ??
-      authorizationCookie?.split("=") ??
-      [];
-
-    return type === "Bearer" ? accessToken : undefined;
   }
 }

@@ -1,5 +1,5 @@
 import { Args, Context, Query, Resolver } from "@nestjs/graphql";
-import { PaginationArgs } from "../../utilities/dto/pagination.args";
+import { PaginationArgs } from "../common/dto/pagination.args";
 import { User } from "./models/user.model";
 import { UserService } from "./user.service";
 

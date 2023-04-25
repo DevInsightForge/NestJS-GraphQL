@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { PaginationArgs } from "../../utilities/dto/pagination.args";
+import { PaginationArgs } from "../common/dto/pagination.args";
 import { NewChatInput } from "./dto/new-chat.input";
 import { Chat } from "./models/chat.model";
 import { ChatBasic } from "./types/chatBasic.type";
