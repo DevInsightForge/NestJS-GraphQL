@@ -1,16 +1,20 @@
 import gql from "graphql-tag";
 import request from "supertest-graphql";
 import { TestManager } from "../../../../tests/TestManager";
+import { defaultUser, testUser } from "../../../../tests/stubs/user.stub";
 import { User } from "../../../user/models/user.model";
 import { JwtTokens } from "../../types/jwtToken.type";
-import { testUser } from "../../../../tests/stubs/user.stub";
 
 describe("[Authorization] Register User", () => {
   const testManager = new TestManager();
 
-  beforeAll(() => testManager.beforeAll());
+  beforeAll(async () => {
+    await testManager.beforeAll();
+  });
 
-  afterAll(() => testManager.afterAll());
+  afterAll(async () => {
+    await testManager.afterAll();
+  });
 
   describe("given that user does not already exists", () => {
     describe("when register mutation is executed", () => {
@@ -63,15 +67,40 @@ describe("[Authorization] Register User", () => {
       });
 
       test("should user exist in database entry", async () => {
-        const user = await User.findBy({ email: testUser.email });
+        const user = await User.findOneBy({ email: testUser.email });
 
         expect(user).toBeDefined();
+        expect(user?.email).toBe(testUser.email);
       });
     });
   });
 
-  describe("given that user already exists", () => {
-    describe("when register mutation is executed", () => {
+  describe("given that user already exists in database", () => {
+    describe("when register mutation is executed for default user", () => {
+      test("should fail to mutate with validation error", async () => {
+        const response = await request<{ register: JwtTokens }>(
+          testManager.httpServer
+        )
+          .mutate(
+            gql(`
+        mutation Register($input: RegisterInput!) {
+            register(input: $input) {
+              refreshToken
+              accessToken
+            }
+          }
+          `)
+          )
+          .variables({
+            input: defaultUser,
+          });
+
+        expect(response?.data?.register).toBeUndefined();
+        expect(response?.errors?.length).toBeGreaterThan(0);
+      });
+    });
+
+    describe("when register mutation is executed for user registered earlier", () => {
       test("should fail to mutate with validation error", async () => {
         const response = await request<{ register: JwtTokens }>(
           testManager.httpServer

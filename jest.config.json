@@ -1,6 +1,6 @@
 {
   "rootDir": "src",
-  "coverageDirectory": "../coverage",
   "preset": "ts-jest",
-  "testEnvironment": "node"
+  "testEnvironment": "node",
+  "coverageDirectory": "../coverage"
 }
