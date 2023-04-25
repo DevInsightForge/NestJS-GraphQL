@@ -3,7 +3,7 @@ import request from "supertest-graphql";
 import { TestManager } from "../../../../tests/TestManager";
 import { User } from "../../../user/models/user.model";
 import { JwtTokens } from "../../types/jwtToken.type";
-import { testUser } from "../stubs/user.stub";
+import { testUser } from "../../../../tests/stubs/user.stub";
 
 describe("[Authorization] Register User", () => {
   const testManager = new TestManager();
