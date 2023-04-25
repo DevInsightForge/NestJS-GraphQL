@@ -6,9 +6,9 @@ export const databaseConfig: TypeOrmModuleAsyncOptions = {
   imports: [ConfigModule],
   inject: [ConfigService],
   useFactory: (configService: ConfigService) => {
-    const isProd = Boolean(configService.get("NODE_ENV") === "production");
-    return isProd
-      ? {
+    switch (configService.get<string>("NODE_ENV")) {
+      case "production":
+        return {
           type: "postgres",
           host: configService.getOrThrow("DB_HOST"),
           port: parseInt(configService.getOrThrow("DB_PORT"), 10),
@@ -17,13 +17,25 @@ export const databaseConfig: TypeOrmModuleAsyncOptions = {
           database: configService.getOrThrow("DB_NAME"),
           synchronize: false,
           autoLoadEntities: true,
-        }
-      : {
+        };
+
+      case "test":
+        return {
+          type: "sqlite",
+          database: join(__dirname, "../../testdb.sqlite3"),
+          synchronize: true,
+          dropSchema: true,
+          autoLoadEntities: true,
+        };
+
+      default:
+        return {
           type: "sqlite",
           database: join(__dirname, "../../db.sqlite3"),
           synchronize: true,
           dropSchema: false,
           autoLoadEntities: true,
         };
+    }
   },
 };

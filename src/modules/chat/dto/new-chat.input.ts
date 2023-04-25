@@ -6,6 +6,6 @@ export class NewChatInput {
   @Field()
   title: string;
 
-  @Field({ nullable: true })
+  @Field(() => [UserBasicInputs], { nullable: true })
   participants: UserBasicInputs[];
 }
