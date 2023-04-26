@@ -5,7 +5,7 @@ import { defaultUser } from "../../../../tests/stubs/user.stub";
 import { User } from "../../../user/models/user.model";
 import { JwtTokens } from "../../types/jwtToken.type";
 
-describe("[Authorization] Login User", () => {
+describe("[Authorization] Refresh Access Token", () => {
   const testManager = new TestManager();
 
   beforeAll(() => testManager.beforeAll());
@@ -14,6 +14,7 @@ describe("[Authorization] Login User", () => {
 
   describe("given that user already exists", () => {
     describe("when login mutation is executed", () => {
+      let refreshToken: string;
       let token: string;
 
       beforeAll(async () => {
@@ -35,10 +36,29 @@ describe("[Authorization] Login User", () => {
           })
           .expectNoErrors();
 
-        token = response.data.login.accessToken;
+        expect(response?.data?.login?.refreshToken).toBeDefined();
+        refreshToken = response?.data?.login?.refreshToken;
       });
 
-      test("should return exact user's profile using token from login mutation", async () => {
+      test("should return new access token by using refresh token from login mutation", async () => {
+        const response = await request<{ refreshAccessToken: string }>(
+          testManager.httpServer
+        )
+          .mutate(
+            gql(`
+              mutation RefreshAccessToken($refreshToken: String!) {
+                refreshAccessToken(refreshToken: $refreshToken)
+              }
+            `)
+          )
+          .variables({ refreshToken })
+          .expectNoErrors();
+
+        expect(response.data.refreshAccessToken).toBeDefined();
+        token = response.data.refreshAccessToken;
+      });
+
+      test("should return exact user's profile using token from refresh mutation", async () => {
         const response = await request<{ userProfile: User }>(
           testManager.httpServer
         )
