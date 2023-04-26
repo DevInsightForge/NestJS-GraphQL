@@ -3,5 +3,7 @@
   "preset": "ts-jest",
   "testEnvironment": "node",
   "coverageDirectory": "../coverage",
+  "globalSetup": "./tests/globalSetup.ts",
+  "globalTeardown": "./tests/globalTeardown.ts",
   "verbose": true
 }

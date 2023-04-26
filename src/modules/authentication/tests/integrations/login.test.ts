@@ -1,25 +1,16 @@
 import gql from "graphql-tag";
 import request from "supertest-graphql";
-import { TestManager } from "../../../../tests/TestManager";
 import { defaultUser } from "../../../../tests/stubs/user.stub";
 import { User } from "../../../user/models/user.model";
 import { JwtTokens } from "../../types/jwtToken.type";
 
 describe("[Authorization] Login User", () => {
-  const testManager = new TestManager();
-
-  beforeAll(() => testManager.beforeAll());
-
-  afterAll(() => testManager.afterAll());
-
   describe("given that user already exists", () => {
     describe("when login mutation is executed", () => {
       let token: string;
 
       beforeAll(async () => {
-        const response = await request<{ login: JwtTokens }>(
-          testManager.httpServer
-        )
+        const response = await request<{ login: JwtTokens }>(global.httpServer)
           .mutate(
             gql(`
               mutation Login($input: LoginInput!) {
@@ -39,9 +30,7 @@ describe("[Authorization] Login User", () => {
       });
 
       test("should return exact user's profile using token from login mutation", async () => {
-        const response = await request<{ userProfile: User }>(
-          testManager.httpServer
-        )
+        const response = await request<{ userProfile: User }>(global.httpServer)
           .mutate(
             gql(`
               query UserProfile {
