@@ -2,6 +2,7 @@
   "rootDir": "src",
   "preset": "ts-jest",
   "testEnvironment": "node",
+  "testRegex": ".*\\.spec\\.ts$",
   "coverageDirectory": "../coverage",
   "globalSetup": "./tests/globalSetup.ts",
   "globalTeardown": "./tests/globalTeardown.ts",

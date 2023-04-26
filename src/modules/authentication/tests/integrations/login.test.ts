@@ -4,7 +4,7 @@ import { defaultUser } from "../../../../tests/stubs/user.stub";
 import { User } from "../../../user/models/user.model";
 import { JwtTokens } from "../../types/jwtToken.type";
 
-describe("[Authorization] Login User", () => {
+export default function loginTest() {
   describe("given that user already exists", () => {
     describe("when login mutation is executed", () => {
       let token: string;
@@ -52,4 +52,4 @@ describe("[Authorization] Login User", () => {
       });
     });
   });
-});
+}

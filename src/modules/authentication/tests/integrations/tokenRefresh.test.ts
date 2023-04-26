@@ -4,7 +4,7 @@ import { defaultUser } from "../../../../tests/stubs/user.stub";
 import { User } from "../../../user/models/user.model";
 import { JwtTokens } from "../../types/jwtToken.type";
 
-describe("[Authorization] Refresh Access Token", () => {
+export default function tokenRefreshTest() {
   describe("given that user already exists", () => {
     describe("when login mutation is executed", () => {
       let refreshToken: string;
@@ -72,4 +72,4 @@ describe("[Authorization] Refresh Access Token", () => {
       });
     });
   });
-});
+}

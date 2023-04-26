@@ -4,7 +4,7 @@ import { defaultUser, testUser } from "../../../../tests/stubs/user.stub";
 import { User } from "../../../user/models/user.model";
 import { JwtTokens } from "../../types/jwtToken.type";
 
-describe("[Authorization] Register User", () => {
+export default function registerTest() {
   describe("given that user does not already exists", () => {
     describe("when register mutation is executed", () => {
       let token: string;
@@ -104,4 +104,4 @@ describe("[Authorization] Register User", () => {
       });
     });
   });
-});
+}
