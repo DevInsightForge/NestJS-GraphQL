@@ -8,13 +8,9 @@ import { JwtTokens } from "../../types/jwtToken.type";
 describe("[Authorization] Register User", () => {
   const testManager = new TestManager();
 
-  beforeAll(async () => {
-    await testManager.beforeAll();
-  });
+  beforeAll(() => testManager.beforeAll());
 
-  afterAll(async () => {
-    await testManager.afterAll();
-  });
+  afterAll(() => testManager.afterAll());
 
   describe("given that user does not already exists", () => {
     describe("when register mutation is executed", () => {
