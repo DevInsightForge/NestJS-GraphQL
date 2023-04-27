@@ -19,10 +19,14 @@ interface RefreshTokensParams {
 
 @Injectable()
 export class AuthenticationService {
+  isProductionMode: boolean;
+
   constructor(
     private configService: ConfigService,
     private jwtService: JwtService
-  ) {}
+  ) {
+    this.isProductionMode = this.configService.get("NODE_ENV") === "production";
+  }
 
   async userLogin({ email, password }: LoginInput): Promise<User> {
     try {
@@ -106,7 +110,6 @@ export class AuthenticationService {
     refreshToken: string,
     res?: Response
   ): Promise<string> {
-    const isProd = this.configService.get("NODE_ENV") === "production";
     const expirationTime = 1 * 60 * 60; // hour * minute * second
     try {
       const refresh = await RefreshToken.findOneByOrFail({
@@ -128,13 +131,27 @@ export class AuthenticationService {
         maxAge: expirationTime * 1000, // expirationTime * milisecond
         path: "/graphql",
         httpOnly: true,
-        secure: isProd,
-        sameSite: isProd ? "none" : "lax",
+        secure: this.isProductionMode,
+        sameSite: this.isProductionMode ? "none" : "lax",
       });
 
       return accessToken;
     } catch (_) {
       throw new GraphQLError("Refresh token is invalid or has been expired");
     }
+  }
+
+  async removeTokenCookie(refreshToken: string, res?: Response): Promise<void> {
+    const refresh = await RefreshToken.findOneByOrFail({ token: refreshToken });
+    refresh.validUntil = new Date();
+    await refresh.save();
+
+    res?.cookie("Bearer", "", {
+      maxAge: 0, // expirationTime * milisecond
+      path: "/graphql",
+      httpOnly: true,
+      secure: this.isProductionMode,
+      sameSite: this.isProductionMode ? "none" : "lax",
+    });
   }
 }

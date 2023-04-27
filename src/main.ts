@@ -12,6 +12,7 @@ const main = async (): Promise<string> => {
 
   app.enableCors({
     origin: true,
+    credentials: true,
   });
 
   await app.listen(port);

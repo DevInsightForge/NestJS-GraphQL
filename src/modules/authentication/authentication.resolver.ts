@@ -78,4 +78,14 @@ export class AuthenticationResolver {
 
     return accessToken;
   }
+
+  @Mutation(() => String, { nullable: true })
+  async logout(
+    @Args("refreshToken") refreshToken: string,
+    @Context("res") res: Response
+  ): Promise<boolean> {
+    await this.authenticationService.removeTokenCookie(refreshToken, res);
+
+    return true;
+  }
 }
